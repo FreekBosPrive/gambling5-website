@@ -1,0 +1,65 @@
+﻿<nav class="top-nav">
+    <div class="nav-container">
+        <a class="nav-brand" href="">
+            <img src="images/logo.png" alt="G♠mblinG5 Logo" class="nav-logo" />
+            <span class="nav-brand-text">G♠mblinG<span class="brand-five">5</span></span>
+        </a>
+        
+        <button class="nav-toggle" @onclick="ToggleNavMenu" aria-label="Toggle navigation">
+            <span class="nav-toggle-icon"></span>
+            <span class="nav-toggle-icon"></span>
+            <span class="nav-toggle-icon"></span>
+        </button>
+        
+        <!-- Playing Card Navigation - Top Right -->
+        <div class="card-nav">
+            <NavLink class="nav-card spade" href="" Match="NavLinkMatch.All">
+                <span class="suit">♠</span>
+                <span class="label">Home</span>
+            </NavLink>
+            <NavLink class="nav-card heart" href="about">
+                <span class="suit">♥</span>
+                <span class="label">About</span>
+            </NavLink>
+            <NavLink class="nav-card diamond" href="gigs">
+                <span class="suit">♦</span>
+                <span class="label">Gigs</span>
+            </NavLink>
+            <NavLink class="nav-card club" href="contact">
+                <span class="suit">♣</span>
+                <span class="label">Contact</span>
+            </NavLink>
+        </div>
+        
+        <!-- Mobile fallback links -->
+        <div class="nav-links-mobile @NavMenuCssClass">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All" @onclick="CollapseNavMenu">
+                Home
+            </NavLink>
+            <NavLink class="nav-link" href="about" @onclick="CollapseNavMenu">
+                About
+            </NavLink>
+            <NavLink class="nav-link" href="gigs" @onclick="CollapseNavMenu">
+                Gigs
+            </NavLink>
+            <NavLink class="nav-link" href="contact" @onclick="CollapseNavMenu">
+                Book Us
+            </NavLink>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapsed" : null;
+    
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+    
+    private void CollapseNavMenu()
+    {
+        collapseNavMenu = true;
+    }
+}
