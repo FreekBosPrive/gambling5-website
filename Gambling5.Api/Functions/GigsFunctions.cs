@@ -10,16 +10,20 @@ namespace Gambling5.Api.Functions;
 public class GigsFunctions
 {
     private readonly ILogger<GigsFunctions> _logger;
-    private readonly TableClient _tableClient;
+    private readonly string _connectionString;
 
     public GigsFunctions(ILogger<GigsFunctions> logger)
     {
         _logger = logger;
-        
-        var connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
-        var tableServiceClient = new TableServiceClient(connectionString);
-        _tableClient = tableServiceClient.GetTableClient("gigs");
-        _tableClient.CreateIfNotExists();
+        _connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage") ?? "UseDevelopmentStorage=true";
+    }
+
+    private async Task<TableClient> GetTableClientAsync()
+    {
+        var tableServiceClient = new TableServiceClient(_connectionString);
+        var tableClient = tableServiceClient.GetTableClient("gigs");
+        await tableClient.CreateIfNotExistsAsync();
+        return tableClient;
     }
 
     [Function("GetGigs")]
@@ -30,9 +34,10 @@ public class GigsFunctions
 
         try
         {
+            var tableClient = await GetTableClientAsync();
             var gigs = new List<GigDto>();
             
-            await foreach (var entity in _tableClient.QueryAsync<GigEntity>())
+            await foreach (var entity in tableClient.QueryAsync<GigEntity>())
             {
                 gigs.Add(GigDto.FromEntity(entity));
             }
@@ -41,8 +46,8 @@ public class GigsFunctions
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching gigs");
-            return new StatusCodeResult(500);
+            _logger.LogError(ex, "Error fetching gigs: {Message}", ex.Message);
+            return new ObjectResult(new { error = ex.Message }) { StatusCode = 500 };
         }
     }
 
@@ -55,7 +60,8 @@ public class GigsFunctions
 
         try
         {
-            var response = await _tableClient.GetEntityIfExistsAsync<GigEntity>("gigs", id);
+            var tableClient = await GetTableClientAsync();
+            var response = await tableClient.GetEntityIfExistsAsync<GigEntity>("gigs", id);
             
             if (!response.HasValue || response.Value is null)
             {
@@ -67,7 +73,7 @@ public class GigsFunctions
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error fetching gig {Id}", id);
-            return new StatusCodeResult(500);
+            return new ObjectResult(new { error = ex.Message }) { StatusCode = 500 };
         }
     }
 
@@ -79,6 +85,7 @@ public class GigsFunctions
 
         try
         {
+            var tableClient = await GetTableClientAsync();
             var gig = await req.ReadFromJsonAsync<GigDto>();
             
             if (gig == null)
@@ -86,25 +93,15 @@ public class GigsFunctions
                 return new BadRequestObjectResult("Invalid gig data");
             }
 
-            var entity = new GigEntity
-            {
-                RowKey = string.IsNullOrEmpty(gig.Id) ? Guid.NewGuid().ToString() : gig.Id,
-                Date = gig.Date,
-                Title = gig.Title,
-                Venue = gig.Venue,
-                Status = gig.Status,
-                Description = gig.Description,
-                IsPublic = gig.IsPublic
-            };
-
-            await _tableClient.UpsertEntityAsync(entity);
+            var entity = gig.ToEntity();
+            await tableClient.UpsertEntityAsync(entity);
 
             return new CreatedResult($"/api/gigs/{entity.RowKey}", GigDto.FromEntity(entity));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating gig");
-            return new StatusCodeResult(500);
+            _logger.LogError(ex, "Error creating gig: {Message}", ex.Message);
+            return new ObjectResult(new { error = ex.Message }) { StatusCode = 500 };
         }
     }
 
@@ -117,13 +114,14 @@ public class GigsFunctions
 
         try
         {
-            await _tableClient.DeleteEntityAsync("gigs", id);
+            var tableClient = await GetTableClientAsync();
+            await tableClient.DeleteEntityAsync("gigs", id);
             return new NoContentResult();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting gig {Id}", id);
-            return new StatusCodeResult(500);
+            return new ObjectResult(new { error = ex.Message }) { StatusCode = 500 };
         }
     }
 }

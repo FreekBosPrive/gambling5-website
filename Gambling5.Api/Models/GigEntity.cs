@@ -10,7 +10,8 @@ public class GigEntity : ITableEntity
     public DateTimeOffset? Timestamp { get; set; }
     public ETag ETag { get; set; }
     
-    public DateTime Date { get; set; }
+    // Store as DateTimeOffset for Azure Table Storage compatibility
+    public DateTimeOffset Date { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Venue { get; set; } = string.Empty;
     public string Status { get; set; } = "confirmed";
@@ -31,11 +32,22 @@ public class GigDto
     public static GigDto FromEntity(GigEntity entity) => new()
     {
         Id = entity.RowKey,
-        Date = entity.Date,
+        Date = entity.Date.DateTime,
         Title = entity.Title,
         Venue = entity.Venue,
         Status = entity.Status,
         Description = entity.Description,
         IsPublic = entity.IsPublic
+    };
+
+    public GigEntity ToEntity() => new()
+    {
+        RowKey = string.IsNullOrEmpty(Id) ? Guid.NewGuid().ToString() : Id,
+        Date = new DateTimeOffset(DateTime.SpecifyKind(Date, DateTimeKind.Utc)),
+        Title = Title,
+        Venue = Venue,
+        Status = Status,
+        Description = Description,
+        IsPublic = IsPublic
     };
 }
