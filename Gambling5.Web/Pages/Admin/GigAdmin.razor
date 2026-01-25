@@ -124,10 +124,12 @@
     private string message = "";
     private bool isError = false;
     private string apiBaseUrl = "";
+    private string apiFunctionKey = "";
 
     protected override async Task OnInitializedAsync()
     {
         apiBaseUrl = Configuration["ApiBaseUrl"] ?? "https://gambling5-api.azurewebsites.net/api";
+        apiFunctionKey = Configuration["ApiFunctionKey"] ?? "";
         await LoadGigs();
     }
 
@@ -180,9 +182,7 @@
         {
             var request = new HttpRequestMessage(HttpMethod.Post, $"{apiBaseUrl}/gigs");
             request.Content = JsonContent.Create(currentGig);
-            
-            // Note: For production, you'd pass a token or use managed identity
-            // For now, the function key would need to be passed securely
+            request.Headers.Add("x-functions-key", apiFunctionKey);
             
             var response = await Http.SendAsync(request);
             
@@ -214,7 +214,9 @@
     {
         try
         {
-            var response = await Http.DeleteAsync($"{apiBaseUrl}/gigs/{gig.Id}");
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{apiBaseUrl}/gigs/{gig.Id}");
+            request.Headers.Add("x-functions-key", apiFunctionKey);
+            var response = await Http.SendAsync(request);
             
             if (response.IsSuccessStatusCode)
             {

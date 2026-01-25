@@ -1,4 +1,7 @@
 @page "/contact"
+@using System.Net.Http.Json
+@inject IConfiguration Configuration
+@inject HttpClient Http
 
 <PageTitle>Kontakt - G♠mblinG5</PageTitle>
 
@@ -31,6 +34,12 @@
         }
         else
         {
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">
+                    @errorMessage
+                </div>
+            }
             <form class="contact-form" @onsubmit="HandleSubmit" @onsubmit:preventDefault>
                 <div class="form-group">
                     <label class="form-label" for="name">Name *</label>
@@ -97,18 +106,48 @@
     private string message = "";
     private bool isSubmitting = false;
     private bool messageSent = false;
+    private string errorMessage = "";
 
     private async Task HandleSubmit()
     {
         isSubmitting = true;
+        errorMessage = "";
         
-        // Simulate sending the message
-        await Task.Delay(1000);
-        
-        // TODO: Implement actual email sending via Azure Functions
-        // For now, just show success message
-        
-        messageSent = true;
-        isSubmitting = false;
+        try
+        {
+            var apiBaseUrl = Configuration["ApiBaseUrl"] ?? "https://gambling5-api.azurewebsites.net/api";
+            var functionKey = Configuration["ApiFunctionKey"] ?? "";
+            
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{apiBaseUrl}/contact");
+            request.Headers.Add("x-functions-key", functionKey);
+            request.Content = JsonContent.Create(new
+            {
+                name,
+                email,
+                phone,
+                eventType,
+                eventDate,
+                message
+            });
+
+            var response = await Http.SendAsync(request);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                messageSent = true;
+            }
+            else
+            {
+                errorMessage = "Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail.";
+            }
+        }
+        catch (Exception)
+        {
+            errorMessage = "Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail.";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
     }
 }
