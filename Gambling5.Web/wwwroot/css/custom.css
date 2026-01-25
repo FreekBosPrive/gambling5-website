@@ -1138,3 +1138,166 @@ textarea.form-control {
 .mb-2 {
     margin-bottom: 2rem;
 }
+
+/* === ADMIN STYLES === */
+
+/* Subtle admin link - just a tiny dot */
+.admin-link-container {
+    text-align: center;
+    margin-top: 3rem;
+    padding-bottom: 1rem;
+}
+
+.admin-link {
+    color: var(--parchment-dark);
+    opacity: 0.2;
+    text-decoration: none;
+    font-size: 0.5rem;
+    transition: opacity 0.3s;
+}
+
+.admin-link:hover {
+    opacity: 0.5;
+}
+
+/* Admin page styles */
+.admin-welcome {
+    text-align: center;
+    color: var(--accent-green);
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.admin-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--parchment-dark);
+}
+
+.admin-section:last-of-type {
+    border-bottom: none;
+}
+
+.gig-form {
+    max-width: 500px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'Crimson Text', Georgia, serif;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 1rem;
+    border: 1px solid var(--parchment-dark);
+    border-radius: 3px;
+    background: var(--parchment);
+    color: var(--ink);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 2px rgba(34, 139, 34, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 3px;
+    margin-top: 1rem;
+}
+
+.alert-success {
+    background: rgba(34, 139, 34, 0.1);
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+}
+
+.alert-error {
+    background: rgba(139, 0, 0, 0.1);
+    border: 1px solid var(--suit-red);
+    color: var(--suit-red);
+}
+
+.gigs-admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.gig-admin-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--parchment-dark);
+    border-radius: 3px;
+}
+
+.gig-admin-card.gig-hidden {
+    opacity: 0.5;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.gig-admin-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+}
+
+.gig-admin-info strong {
+    color: var(--ink);
+}
+
+.gig-admin-date,
+.gig-admin-venue,
+.gig-admin-status {
+    font-size: 0.9rem;
+    color: var(--parchment-dark);
+}
+
+.gig-admin-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.btn-icon:hover {
+    opacity: 1;
+}
+
+.btn-icon.btn-danger:hover {
+    filter: brightness(0.8);
+}
+
+.admin-footer {
+    margin-top: 2rem;
+    text-align: center;
+}

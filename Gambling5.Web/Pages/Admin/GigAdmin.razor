@@ -1,0 +1,237 @@
+@page "/admin/gigs"
+@attribute [Authorize]
+@using Gambling5.Web.Models
+@using Gambling5.Web.Services
+@using Microsoft.AspNetCore.Authorization
+@inject GigService GigService
+@inject IConfiguration Configuration
+@inject HttpClient Http
+
+<PageTitle>Gig Verwaltung - G♠mblinG5</PageTitle>
+
+<div class="page-background page-bg-gigs">
+
+<div class="page-header">
+    <h1 class="page-title">Gig Verwaltung</h1>
+</div>
+
+<div class="parchment-card">
+    <AuthorizeView>
+        <Authorized Context="authContext">
+            <p class="admin-welcome">Willkommen, @authContext.User.Identity?.Name</p>
+            
+            <section class="admin-section">
+                <h2 class="section-title">@(editingGig == null ? "Neuer Gig" : "Gig bearbeiten")</h2>
+                
+                <EditForm Model="@currentGig" OnValidSubmit="SaveGig" class="gig-form">
+                    <div class="form-group">
+                        <label for="title">Titel</label>
+                        <InputText id="title" @bind-Value="currentGig.Title" class="form-control" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Datum</label>
+                        <InputDate id="date" @bind-Value="currentGig.Date" class="form-control" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="venue">Veranstaltungsort</label>
+                        <InputText id="venue" @bind-Value="currentGig.Venue" class="form-control" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <InputSelect id="status" @bind-Value="currentGig.Status" class="form-control">
+                            <option value="confirmed">Bestätigt</option>
+                            <option value="public">Öffentlich</option>
+                            <option value="tentative">Vorläufig</option>
+                            <option value="cancelled">Abgesagt</option>
+                        </InputSelect>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <InputCheckbox @bind-Value="currentGig.IsPublic" />
+                            Öffentlich sichtbar
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                            @(isSaving ? "Speichern..." : (editingGig == null ? "Hinzufügen" : "Aktualisieren"))
+                        </button>
+                        @if (editingGig != null)
+                        {
+                            <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Abbrechen</button>
+                        }
+                    </div>
+                </EditForm>
+                
+                @if (!string.IsNullOrEmpty(message))
+                {
+                    <div class="alert @(isError ? "alert-error" : "alert-success")">@message</div>
+                }
+            </section>
+            
+            <section class="admin-section">
+                <h2 class="section-title">Alle Gigs</h2>
+                
+                @if (isLoading)
+                {
+                    <p>Lade Gigs...</p>
+                }
+                else if (gigs == null || !gigs.Any())
+                {
+                    <p>Keine Gigs vorhanden.</p>
+                }
+                else
+                {
+                    <div class="gigs-admin-list">
+                        @foreach (var gig in gigs.OrderBy(g => g.Date))
+                        {
+                            <div class="gig-admin-card @(gig.IsPublic ? "" : "gig-hidden")">
+                                <div class="gig-admin-info">
+                                    <strong>@gig.Title</strong>
+                                    <span class="gig-admin-date">@gig.Date.ToString("dd.MM.yyyy")</span>
+                                    <span class="gig-admin-venue">@gig.Venue</span>
+                                    <span class="gig-admin-status">@gig.Status @(gig.IsPublic ? "" : "(versteckt)")</span>
+                                </div>
+                                <div class="gig-admin-actions">
+                                    <button class="btn-icon" @onclick="() => EditGig(gig)" title="Bearbeiten">✏️</button>
+                                    <button class="btn-icon btn-danger" @onclick="() => DeleteGig(gig)" title="Löschen">🗑️</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+            
+            <div class="admin-footer">
+                <a href="/gigs" class="btn btn-secondary">← Zurück zur Gig-Seite</a>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</div>
+
+</div>
+
+@code {
+    private List<Gig>? gigs;
+    private Gig currentGig = new() { Date = DateTime.Today.AddMonths(1), Status = "confirmed", IsPublic = true };
+    private Gig? editingGig;
+    private bool isLoading = true;
+    private bool isSaving = false;
+    private string message = "";
+    private bool isError = false;
+    private string apiBaseUrl = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        apiBaseUrl = Configuration["ApiBaseUrl"] ?? "https://gambling5-api.azurewebsites.net/api";
+        await LoadGigs();
+    }
+
+    private async Task LoadGigs()
+    {
+        isLoading = true;
+        try
+        {
+            gigs = await Http.GetFromJsonAsync<List<Gig>>($"{apiBaseUrl}/gigs");
+        }
+        catch (Exception ex)
+        {
+            message = $"Fehler beim Laden: {ex.Message}";
+            isError = true;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void EditGig(Gig gig)
+    {
+        editingGig = gig;
+        currentGig = new Gig
+        {
+            Id = gig.Id,
+            Title = gig.Title,
+            Date = gig.Date,
+            Venue = gig.Venue,
+            Status = gig.Status,
+            Description = gig.Description,
+            IsPublic = gig.IsPublic
+        };
+    }
+
+    private void CancelEdit()
+    {
+        editingGig = null;
+        currentGig = new Gig { Date = DateTime.Today.AddMonths(1), Status = "confirmed", IsPublic = true };
+        message = "";
+    }
+
+    private async Task SaveGig()
+    {
+        isSaving = true;
+        message = "";
+        
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{apiBaseUrl}/gigs");
+            request.Content = JsonContent.Create(currentGig);
+            
+            // Note: For production, you'd pass a token or use managed identity
+            // For now, the function key would need to be passed securely
+            
+            var response = await Http.SendAsync(request);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                message = editingGig == null ? "Gig erfolgreich hinzugefügt!" : "Gig erfolgreich aktualisiert!";
+                isError = false;
+                CancelEdit();
+                await LoadGigs();
+            }
+            else
+            {
+                message = $"Fehler: {response.StatusCode}";
+                isError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"Fehler: {ex.Message}";
+            isError = true;
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task DeleteGig(Gig gig)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync($"{apiBaseUrl}/gigs/{gig.Id}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                message = "Gig gelöscht!";
+                isError = false;
+                await LoadGigs();
+            }
+            else
+            {
+                message = $"Fehler beim Löschen: {response.StatusCode}";
+                isError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"Fehler: {ex.Message}";
+            isError = true;
+        }
+    }
+}
