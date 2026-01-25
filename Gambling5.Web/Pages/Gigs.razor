@@ -1,4 +1,7 @@
 @page "/gigs"
+@using Gambling5.Web.Models
+@using Gambling5.Web.Services
+@inject GigService GigService
 
 <PageTitle>Auftritte - G♠mblinG5</PageTitle>
 
@@ -15,44 +18,36 @@
     </section>
 
     <div class="gigs-list">
-        <div class="gig-card">
-            <div class="gig-date">
-                <span class="gig-month">MÄR</span>
-                <span class="gig-day">15</span>
-                <span class="gig-year">2026</span>
+        @if (isLoading)
+        {
+            <div class="loading-message">
+                <p>Lade Auftritte...</p>
             </div>
-            <div class="gig-details">
-                <h3>Frühjahrs Gala</h3>
-                <p class="gig-venue">Private Veranstaltung - München</p>
+        }
+        else if (gigs == null || !gigs.Any())
+        {
+            <div class="no-gigs-message">
+                <p>Keine kommenden Auftritte geplant. Schauen Sie bald wieder vorbei!</p>
             </div>
-            <span class="gig-status status-confirmed">Bestätigt</span>
-        </div>
-
-        <div class="gig-card">
-            <div class="gig-date">
-                <span class="gig-month">APR</span>
-                <span class="gig-day">7</span>
-                <span class="gig-year">2026</span>
-            </div>
-            <div class="gig-details">
-                <h3>Apres Ski Party</h3>
-                <p class="gig-venue">Berghütte - Garmisch</p>
-            </div>
-            <span class="gig-status status-confirmed">Bestätigt</span>
-        </div>
-
-        <div class="gig-card">
-            <div class="gig-date">
-                <span class="gig-month">MAI</span>
-                <span class="gig-day">20</span>
-                <span class="gig-year">2026</span>
-            </div>
-            <div class="gig-details">
-                <h3>Sommer Festival</h3>
-                <p class="gig-venue">Marktplatz - Beuerberg</p>
-            </div>
-            <span class="gig-status status-confirmed">Öffentlich</span>
-        </div>
+        }
+        else
+        {
+            @foreach (var gig in gigs)
+            {
+                <div class="gig-card">
+                    <div class="gig-date">
+                        <span class="gig-month">@gig.Date.ToString("MMM", new System.Globalization.CultureInfo("de-DE")).ToUpper()</span>
+                        <span class="gig-day">@gig.Date.Day</span>
+                        <span class="gig-year">@gig.Date.Year</span>
+                    </div>
+                    <div class="gig-details">
+                        <h3>@gig.Title</h3>
+                        <p class="gig-venue">@gig.Venue</p>
+                    </div>
+                    <span class="gig-status @GetStatusClass(gig.Status)">@GetStatusText(gig.Status)</span>
+                </div>
+            }
+        }
     </div>
 
     <section class="content-section text-center">
@@ -66,3 +61,38 @@
 </div>
 
 </div>
+
+@code {
+    private List<Gig>? gigs;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            gigs = await GigService.GetUpcomingGigsAsync();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private string GetStatusClass(string status) => status.ToLower() switch
+    {
+        "confirmed" => "status-confirmed",
+        "public" => "status-public",
+        "tentative" => "status-tentative",
+        "cancelled" => "status-cancelled",
+        _ => "status-confirmed"
+    };
+
+    private string GetStatusText(string status) => status.ToLower() switch
+    {
+        "confirmed" => "Bestätigt",
+        "public" => "Öffentlich",
+        "tentative" => "Vorläufig",
+        "cancelled" => "Abgesagt",
+        _ => "Bestätigt"
+    };
+}
