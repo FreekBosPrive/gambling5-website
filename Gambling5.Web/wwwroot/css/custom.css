@@ -323,7 +323,7 @@ p {
     --nav-right: 30px;
     /* Hover transform - single source of truth */
     --hover-transform: rotate(0deg) rotateX(-25deg) translateY(-15px) translateZ(20px) scale(1.15);
-    
+
     display: flex;
     position: absolute;
     right: var(--nav-right);
@@ -439,7 +439,7 @@ p {
         display: flex !important;
         flex-direction: row;
         position: fixed;
-        right: -70px;
+        right: -115px;
         top: 120px;
         gap: 0;
         z-index: 9999;
@@ -447,7 +447,7 @@ p {
         transform: rotate(-90deg);
         transform-origin: center center;
     }
-    
+
     .nav-card {
         width: 75px;
         height: 105px;
@@ -456,41 +456,41 @@ p {
         border-radius: 6px;
         transform-origin: top center;
     }
-    
+
     .nav-card:first-child {
         margin-left: 0;
     }
-    
+
     .nav-card .suit {
         font-size: 20px;
         margin-bottom: 3px;
     }
-    
+
     .nav-card .label {
         font-size: 13px;
     }
-    
+
     /* Keep the same fan rotations as desktop */
     .nav-card.spade {
         transform: rotate(-12deg);
         z-index: 4;
     }
-    
+
     .nav-card.heart {
         transform: rotate(-4deg);
         z-index: 3;
     }
-    
+
     .nav-card.diamond {
         transform: rotate(4deg);
         z-index: 2;
     }
-    
+
     .nav-card.club {
         transform: rotate(12deg);
         z-index: 1;
     }
-    
+
     .nav-card:hover {
         transform: rotate(0deg) rotateX(-25deg) translateY(-15px) translateZ(20px) scale(1.15);
         z-index: 10000 !important;
@@ -597,11 +597,37 @@ p {
     z-index: 1;
 }
 
+/* Logo wrapper with spotlight effect */
+.hero-logo-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.logo-spotlight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(ellipse at center, 
+        rgba(212, 175, 55, 0.35) 0%, 
+        rgba(212, 175, 55, 0.15) 30%, 
+        rgba(212, 175, 55, 0.05) 50%, 
+        transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
 .hero-logo {
-    width: 120px;
+    position: relative;
+    width: 280px;
     height: auto;
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+    filter: 
+        drop-shadow(0 0 25px rgba(212, 175, 55, 0.7))
+        drop-shadow(0 0 50px rgba(212, 175, 55, 0.35))
+        drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
 }
 
 .hero-title {
