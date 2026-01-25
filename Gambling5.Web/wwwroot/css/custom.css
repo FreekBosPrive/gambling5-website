@@ -1144,20 +1144,17 @@ textarea.form-control {
 /* Subtle admin link - just a tiny dot */
 .admin-link-container {
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding-bottom: 1rem;
 }
 
 .admin-link {
-    color: var(--parchment-dark);
-    opacity: 0.2;
-    text-decoration: none;
-    font-size: 0.5rem;
-    transition: opacity 0.3s;
+    display: inline-block;
 }
 
-.admin-link:hover {
-    opacity: 0.5;
+.admin-dice {
+    width: 120px;
+    height: auto;
 }
 
 /* Admin page styles */
