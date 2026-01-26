@@ -7,93 +7,96 @@
 
 <div class="page-background page-bg-contact">
 
-<div class="page-header">
-    <h1 class="page-title">Kontakt</h1>
-</div>
+    <div class="page-header">
+        <h1 class="page-title">Kontakt</h1>
+    </div>
 
-<div class="parchment-card">
-    <section class="intro-section">
-        <div class="contact-box">
-            <h2 class="contact-title">Kontakt:</h2>
-            <p class="contact-name">Florian Tschamler</p>
-            <p class="contact-info">Telefon: 08179/5405</p>
-            <p class="contact-info">Mobil: 0176/18853226</p>
-            <p class="contact-info">E-Mail: <a href="mailto:info@gambling5.de" class="contact-email">info@gambling5.de</a></p>
-        </div>
-    </section>
-
-    <section class="content-section">
-        <h2 class="section-title">Anfrage senden</h2>
-        <p class="intro-text text-center mb-2">Füllen Sie das Formular aus und wir melden uns innerhalb von 24 Stunden.</p>
-        
-        @if (messageSent)
-        {
-            <div class="alert alert-success">
-                <strong>Vielen Dank!</strong> Ihre Nachricht wurde gesendet. Wir melden uns bald bei Ihnen!
+    <div class="parchment-card">
+        <section class="intro-section">
+            <div class="contact-box">
+                <h2 class="contact-title">Kontakt:</h2>
+                <p class="contact-name">Florian Tschamler</p>
+                <p class="contact-info">Telefon: 08179/5405</p>
+                <p class="contact-info">Mobil: 0176/18853226</p>
+                <p class="contact-info">E-Mail: <a href="mailto:info@gambling5.de"
+                        class="contact-email">info@gambling5.de</a></p>
             </div>
-        }
-        else
-        {
-            @if (!string.IsNullOrEmpty(errorMessage))
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Anfrage senden</h2>
+            <p class="intro-text text-center mb-2">Füllen Sie das Formular aus und wir melden uns innerhalb von 24
+                Stunden.</p>
+
+            @if (messageSent)
             {
-                <div class="alert alert-danger">
-                    @errorMessage
+                <div class="alert alert-success">
+                    <strong>Vielen Dank!</strong> Ihre Nachricht wurde gesendet. Wir melden uns bald bei Ihnen!
                 </div>
             }
-            <form class="contact-form" @onsubmit="HandleSubmit" @onsubmit:preventDefault>
-                <div class="form-group">
-                    <label class="form-label" for="name">Name *</label>
-                    <input type="text" id="name" class="form-control" @bind="name" required />
-                </div>
+            else
+            {
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger">
+                        @errorMessage
+                    </div>
+                }
+                <form class="contact-form" @onsubmit="HandleSubmit" @onsubmit:preventDefault>
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name *</label>
+                        <input type="text" id="name" class="form-control" @bind="name" required />
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="email">E-Mail *</label>
-                    <input type="email" id="email" class="form-control" @bind="email" required />
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">E-Mail *</label>
+                        <input type="email" id="email" class="form-control" @bind="email" required />
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="phone">Telefon</label>
-                    <input type="tel" id="phone" class="form-control" @bind="phone" />
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Telefon</label>
+                        <input type="tel" id="phone" class="form-control" @bind="phone" />
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="eventType">Art der Veranstaltung</label>
-                    <select id="eventType" class="form-control" @bind="eventType">
-                        <option value="">Bitte wählen...</option>
-                        <option value="firmenfeier">Firmenfeier</option>
-                        <option value="privatfest">Privatfest</option>
-                        <option value="hochzeit">Hochzeit</option>
-                        <option value="festival">Festival/Öffentlich</option>
-                        <option value="sonstiges">Sonstiges</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="eventType">Art der Veranstaltung</label>
+                        <select id="eventType" class="form-control" @bind="eventType">
+                            <option value="">Bitte wählen...</option>
+                            <option value="firmenfeier">Firmenfeier</option>
+                            <option value="privatfest">Privatfest</option>
+                            <option value="kneipe">Kneipenabend</option>
+                            <option value="festival">Festival/Öffentlich</option>
+                            <option value="sonstiges">Sonstiges</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="date">Datum der Veranstaltung</label>
-                    <input type="text" id="date" class="form-control" @bind="eventDate" placeholder="z.B. 15. März 2026" />
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="date">Datum der Veranstaltung</label>
+                        <input type="text" id="date" class="form-control" @bind="eventDate"
+                            placeholder="z.B. 15. März 2026" />
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="message">Nachricht *</label>
-                    <textarea id="message" class="form-control" rows="5" @bind="message" required></textarea>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="message">Nachricht *</label>
+                        <textarea id="message" class="form-control" rows="5" @bind="message" required></textarea>
+                    </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-large" disabled="@isSubmitting">
-                        @if (isSubmitting)
-                        {
-                            <span>Wird gesendet...</span>
-                        }
-                        else
-                        {
-                            <span>Nachricht senden</span>
-                        }
-                    </button>
-                </div>
-            </form>
-        }
-    </section>
-</div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large" disabled="@isSubmitting">
+                            @if (isSubmitting)
+                            {
+                                <span>Wird gesendet...</span>
+                            }
+                            else
+                            {
+                                <span>Nachricht senden</span>
+                            }
+                        </button>
+                    </div>
+                </form>
+            }
+        </section>
+    </div>
 
 </div>
 
@@ -112,12 +115,12 @@
     {
         isSubmitting = true;
         errorMessage = "";
-        
+
         try
         {
             var apiBaseUrl = Configuration["ApiBaseUrl"] ?? "https://gambling5-api.azurewebsites.net/api";
             var functionKey = Configuration["ApiFunctionKey"] ?? "";
-            
+
             var request = new HttpRequestMessage(HttpMethod.Post, $"{apiBaseUrl}/contact");
             request.Headers.Add("x-functions-key", functionKey);
             request.Content = JsonContent.Create(new
@@ -131,7 +134,7 @@
             });
 
             var response = await Http.SendAsync(request);
-            
+
             if (response.IsSuccessStatusCode)
             {
                 messageSent = true;

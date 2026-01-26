@@ -1,0 +1,7 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "dotnet build": true,
+        "az": true,
+        "Compress-Archive": true
+    }
+}

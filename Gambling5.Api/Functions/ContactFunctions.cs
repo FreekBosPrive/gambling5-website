@@ -87,7 +87,7 @@ public class ContactFunctions
             {
                 "firmenfeier" => "Firmenfeier",
                 "privatfest" => "Privatfest",
-                "hochzeit" => "Hochzeit",
+                "kneipe" => "Kneipenabend",
                 "festival" => "Festival/Öffentlich",
                 "sonstiges" => "Sonstiges",
                 _ => "Nicht angegeben"
