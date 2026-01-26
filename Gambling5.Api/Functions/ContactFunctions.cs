@@ -34,7 +34,7 @@ public class ContactFunctions
 
             var today = DateTime.UtcNow.ToString("yyyy-MM-dd");
             EmailCounterEntity? counter = null;
-            
+
             try
             {
                 var counterResponse = await tableClient.GetEntityAsync<EmailCounterEntity>("counter", today);
@@ -59,7 +59,7 @@ public class ContactFunctions
                 PropertyNameCaseInsensitive = true
             });
 
-            if (contact == null || string.IsNullOrEmpty(contact.Name) || 
+            if (contact == null || string.IsNullOrEmpty(contact.Name) ||
                 string.IsNullOrEmpty(contact.Email) || string.IsNullOrEmpty(contact.Message))
             {
                 var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
@@ -144,7 +144,7 @@ Diese E-Mail wurde automatisch über das Kontaktformular auf www.gambling5.de ge
                 await tableClient.UpdateEntityAsync(counter, counter.ETag);
             }
 
-            _logger.LogInformation("Contact email sent successfully from {Email}. Daily count: {Count}/{Limit}", 
+            _logger.LogInformation("Contact email sent successfully from {Email}. Daily count: {Count}/{Limit}",
                 contact.Email, counter.Count, DAILY_EMAIL_LIMIT);
 
             var response = req.CreateResponse(HttpStatusCode.OK);

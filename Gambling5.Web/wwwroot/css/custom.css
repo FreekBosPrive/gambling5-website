@@ -551,6 +551,7 @@ p {
 }
 
 /* Corner decorations */
+
 .parchment-card::before,
 .parchment-card::after {
     content: '❧';
@@ -559,6 +560,11 @@ p {
     color: var(--border-gold);
     opacity: 0.85;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+    width: auto;
+    height: auto;
+    display: inline;
+    line-height: 1;
+    pointer-events: none;
 }
 
 .parchment-card::before {
