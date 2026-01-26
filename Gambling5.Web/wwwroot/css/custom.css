@@ -570,6 +570,7 @@ p {
     bottom: 18px;
     right: 20px;
     transform: rotate(180deg);
+    pointer-events: none;
 }
 
 /* === HERO SECTION === */
