@@ -811,6 +811,45 @@ p {
     margin: 0;
 }
 
+.surprise-video-frame {
+    margin: 1.5rem 0 0;
+    padding: 0.9rem;
+    background:
+        linear-gradient(180deg, rgba(58, 42, 31, 0.96) 0%, rgba(27, 19, 14, 0.98) 100%);
+    border: 2px solid var(--border-gold);
+    box-shadow:
+        inset 0 0 0 1px rgba(244, 226, 185, 0.12),
+        0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+.surprise-video {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid rgba(244, 226, 185, 0.28);
+    background: #0f0c09;
+    aspect-ratio: 5 / 4;
+}
+
+.surprise-video-caption {
+    margin: 0.75rem 0 0;
+    text-align: center;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: rgba(244, 226, 185, 0.82);
+}
+
+@media (max-width: 768px) {
+    .surprise-video-frame {
+        padding: 0.65rem;
+    }
+
+    .surprise-video-caption {
+        font-size: 0.88rem;
+    }
+}
+
 /* === CTA SECTION === */
 .cta-section {
     padding: 3rem 1.5rem;
