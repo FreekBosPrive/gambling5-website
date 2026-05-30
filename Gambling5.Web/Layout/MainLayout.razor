@@ -1,10 +1,13 @@
 ﻿@inherits LayoutComponentBase
 @inject Gambling5.Web.Services.LanguageService L
+@implements IDisposable
 <div class="app-container">
     <NavMenu />
     
     <main class="main-content">
-        @Body
+        <div @key="L.Current">
+            @Body
+        </div>
     </main>
     
     <footer class="site-footer">
@@ -13,3 +16,20 @@
         </div>
     </footer>
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        L.OnChange += HandleLanguageChanged;
+    }
+
+    private void HandleLanguageChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        L.OnChange -= HandleLanguageChanged;
+    }
+}
