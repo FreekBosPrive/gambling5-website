@@ -198,6 +198,37 @@ p {
     color: var(--parchment);
 }
 
+.language-switcher {
+    display: flex;
+    gap: 0.35rem;
+    margin-left: 1rem;
+    margin-right: auto;
+}
+
+.lang-btn {
+    border: 1px solid rgba(244, 226, 185, 0.45);
+    background: rgba(60, 38, 26, 0.5);
+    color: var(--parchment);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    min-width: 2.1rem;
+    padding: 0.2rem 0.45rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    border-color: var(--border-gold);
+    background: rgba(106, 68, 45, 0.5);
+}
+
+.lang-btn.active {
+    background: rgba(150, 101, 59, 0.8);
+    border-color: var(--border-gold);
+    color: #fff8eb;
+}
+
 .nav-toggle {
     display: none;
     background: none;
@@ -244,6 +275,15 @@ p {
 }
 
 @media (max-width: 768px) {
+    .language-switcher {
+        margin-left: 0.6rem;
+    }
+
+    .lang-btn {
+        min-width: 1.9rem;
+        padding: 0.18rem 0.35rem;
+    }
+
     .nav-toggle {
         display: flex;
     }

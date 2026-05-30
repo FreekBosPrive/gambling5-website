@@ -1,33 +1,43 @@
 @page "/about"
+@inject Gambling5.Web.Services.LanguageService L
 
-<PageTitle>Über Uns - G♠mblinG5</PageTitle>
+<PageTitle>@L.T("Über Uns", "About Us", "Over Ons") - G♠mblinG5</PageTitle>
 
 <div class="page-background page-bg-about">
 
     <div class="page-header">
-        <h1 class="page-title">Über G♠mblinG<span class="brand-five">5</span></h1>
+        <h1 class="page-title">@L.T("Über", "About", "Over") G♠mblinG<span class="brand-five">5</span></h1>
     </div>
 
     <div class="parchment-card">
         <section class="intro-section">
-            <h2 class="section-title">Wir sind Gambling 5.</h2>
+            <h2 class="section-title">@L.T("Wir sind Gambling 5.", "We are Gambling 5.", "Wij zijn Gambling 5.")</h2>
             <p class="intro-text">
-                Fünf Musiker, eine Mission: Energie, Power und echtes Live-Feeling! Wir bringen jede Bühne zum Beben – mit akustischer und elektrischer Wucht, Spielfreude und Leidenschaft. Unser Sound ist handgemacht, ehrlich und immer mitreißend.
+                @L.T(
+                    "Fünf Musiker, eine Mission: Energie, Power und echtes Live-Feeling! Wir bringen jede Bühne zum Beben – mit akustischer und elektrischer Wucht, Spielfreude und Leidenschaft. Unser Sound ist handgemacht, ehrlich und immer mitreißend.",
+                    "Five musicians, one mission: energy, power and real live feeling! We shake every stage with acoustic and electric force, joy of playing and passion. Our sound is handcrafted, honest and always captivating.",
+                    "Vijf muzikanten, een missie: energie, power en echt live-gevoel! Wij laten elk podium trillen met akoestische en elektrische kracht, speelplezier en passie. Onze sound is handgemaakt, eerlijk en altijd meeslepend.")
             </p>
         </section>
 
         <section class="surprise-section">
-            <h3 class="surprise-title">Das ist Gambling 5:</h3>
+            <h3 class="surprise-title">@L.T("Das ist Gambling 5:", "This is Gambling 5:", "Dit is Gambling 5:")</h3>
             <p class="surprise-text">
-                Einzigartige Songauswahl, überraschende Klassiker, pure Spielfreude. Von Golden Earring über Tom Petty, Spandau Ballet bis Beyoncé – wir spielen, was bewegt und begeistert.
+                @L.T(
+                    "Einzigartige Songauswahl, überraschende Klassiker, pure Spielfreude. Von Golden Earring über Tom Petty, Spandau Ballet bis Beyonce – wir spielen, was bewegt und begeistert.",
+                    "Unique song selection, surprising classics, pure joy of performance. From Golden Earring and Tom Petty to Spandau Ballet and Beyonce - we play what moves and excites.",
+                    "Unieke songkeuze, verrassende klassiekers, puur speelplezier. Van Golden Earring en Tom Petty tot Spandau Ballet en Beyonce - wij spelen wat raakt en enthousiast maakt.")
             </p>
             <p class="surprise-text">
-                Unsere Shows sind voller Energie, Interaktion und Leidenschaft. Kein Mainstream, sondern Songs mit Charakter – immer tanzbar, immer mitreißend, immer live.
+                @L.T(
+                    "Unsere Shows sind voller Energie, Interaktion und Leidenschaft. Kein Mainstream, sondern Songs mit Charakter – immer tanzbar, immer mitreißend, immer live.",
+                    "Our shows are full of energy, interaction and passion. No mainstream, but songs with character - always danceable, always captivating, always live.",
+                    "Onze shows zitten vol energie, interactie en passie. Geen mainstream, maar nummers met karakter - altijd dansbaar, altijd meeslepend, altijd live.")
             </p>
         </section>
 
         <section class="members-section">
-            <h2 class="members-title">Die internationalen Musiker:</h2>
+            <h2 class="members-title">@L.T("Die internationalen Musiker:", "The international musicians:", "De internationale muzikanten:")</h2>
             <div class="member-item">
                 <span class="member-origin">NL:</span>
                 <span class="member-name">Ingrid Verhagen:</span>
@@ -46,7 +56,7 @@
             <div class="member-item">
                 <span class="member-origin">TÖL:</span>
                 <span class="member-name">Linus Winkler:</span>
-                <span class="member-instruments">Luftgitarre, Stromgitarre, Vocals</span>
+                <span class="member-instruments">@L.T("Luftgitarre, Stromgitarre, Vocals", "Air guitar, electric guitar, vocals", "Luchtgitaar, elektrische gitaar, vocals")</span>
             </div>
             <div class="member-item">
                 <span class="member-origin">TÖL:</span>
@@ -56,27 +66,27 @@
         </section>
 
         <section class="content-section">
-            <h2 class="section-title">Perfekt Für</h2>
+            <h2 class="section-title">@L.T("Perfekt Für", "Perfect For", "Perfect Voor")</h2>
             <div class="repertoire-grid">
                 <div class="repertoire-card">
                     <div class="repertoire-icon">♠</div>
-                    <h3 class="repertoire-title">Firmenfeiern</h3>
-                    <p class="repertoire-desc">Events, bei denen Energie und Stimmung gefragt sind</p>
+                    <h3 class="repertoire-title">@L.T("Firmenfeiern", "Corporate Events", "Bedrijfsevents")</h3>
+                    <p class="repertoire-desc">@L.T("Events, bei denen Energie und Stimmung gefragt sind", "Events where energy and atmosphere matter", "Events waar energie en sfeer centraal staan")</p>
                 </div>
                 <div class="repertoire-card">
                     <div class="repertoire-icon">♥</div>
-                    <h3 class="repertoire-title">Privatfeste</h3>
-                    <p class="repertoire-desc">Geburtstage, Jubiläen und Partys mit Live-Power</p>
+                    <h3 class="repertoire-title">@L.T("Privatfeste", "Private Parties", "Privéfeesten")</h3>
+                    <p class="repertoire-desc">@L.T("Geburtstage, Jubiläen und Partys mit Live-Power", "Birthdays, anniversaries and parties with live power", "Verjaardagen, jubilea en feesten met live power")</p>
                 </div>
                 <div class="repertoire-card">
                     <div class="repertoire-icon">♣</div>
-                    <h3 class="repertoire-title">Kneipenabende</h3>
-                    <p class="repertoire-desc">Mitreißende Live-Musik, die niemanden sitzen lässt</p>
+                    <h3 class="repertoire-title">@L.T("Kneipenabende", "Pub Nights", "Café-avonden")</h3>
+                    <p class="repertoire-desc">@L.T("Mitreißende Live-Musik, die niemanden sitzen lässt", "Captivating live music that gets everyone moving", "Meeslepende livemuziek die niemand laat stilzitten")</p>
                 </div>
                 <div class="repertoire-card">
                     <div class="repertoire-icon">♦</div>
                     <h3 class="repertoire-title">Festivals</h3>
-                    <p class="repertoire-desc">Von Kleinkunst bis Open-Air – wir bringen die Bühne zum Kochen</p>
+                    <p class="repertoire-desc">@L.T("Von Kleinkunst bis Open-Air – wir bringen die Bühne zum Kochen", "From cabaret stages to open-air events - we set the stage on fire", "Van kleinkunst tot open-air - wij brengen het podium tot leven")</p>
                 </div>
             </div>
         </section>
@@ -84,9 +94,9 @@
 
     <section class="cta-section">
         <div class="cta-card">
-            <h2 class="section-title">Bereit für Ihren Event?</h2>
-            <p class="intro-text text-center mb-2">Kontaktieren Sie uns für Buchungen und Verfügbarkeit</p>
-            <a href="/contact" class="btn btn-primary btn-large">Jetzt Anfragen</a>
+            <h2 class="section-title">@L.T("Bereit für Ihren Event?", "Ready for your event?", "Klaar voor jouw event?")</h2>
+            <p class="intro-text text-center mb-2">@L.T("Kontaktieren Sie uns für Buchungen und Verfügbarkeit", "Contact us for bookings and availability", "Neem contact met ons op voor boekingen en beschikbaarheid")</p>
+            <a href="/contact" class="btn btn-primary btn-large">@L.T("Jetzt Anfragen", "Request Now", "Nu Aanvragen")</a>
         </div>
     </section>
 

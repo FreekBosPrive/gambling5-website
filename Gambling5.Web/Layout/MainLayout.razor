@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject Gambling5.Web.Services.LanguageService L
 <div class="app-container">
     <NavMenu />
     
@@ -8,7 +9,7 @@
     
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2026 G♠mblinG5. I bet you'll like it.</p>
+            <p>&copy; 2026 G♠mblinG5. @L.T("Ich wette, es gefällt Ihnen.", "I bet you'll like it.", "Ik wed dat je het leuk vindt.")</p>
         </div>
     </footer>
 </div>

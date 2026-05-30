@@ -3,6 +3,12 @@
         <a class="nav-brand" href="">
             <span class="nav-brand-text">G♠mblinG<span class="brand-five">5</span></span>
         </a>
+
+        <div class="language-switcher" aria-label="Language switcher">
+            <button type="button" class="lang-btn @(L.Current == "de" ? "active" : "")" @onclick='() => SetLanguage("de")'>DE</button>
+            <button type="button" class="lang-btn @(L.Current == "en" ? "active" : "")" @onclick='() => SetLanguage("en")'>EN</button>
+            <button type="button" class="lang-btn @(L.Current == "nl" ? "active" : "")" @onclick='() => SetLanguage("nl")'>NL</button>
+        </div>
         
         <button class="nav-toggle" @onclick="ToggleNavMenu" aria-label="Toggle navigation">
             <span class="nav-toggle-icon"></span>
@@ -49,6 +55,8 @@
 </nav>
 
 @code {
+    [Inject] private Gambling5.Web.Services.LanguageService L { get; set; } = default!;
+
     private bool collapseNavMenu = true;
     private string? NavMenuCssClass => collapseNavMenu ? "collapsed" : null;
     
@@ -60,5 +68,10 @@
     private void CollapseNavMenu()
     {
         collapseNavMenu = true;
+    }
+
+    private void SetLanguage(string language)
+    {
+        L.SetLanguage(language);
     }
 }

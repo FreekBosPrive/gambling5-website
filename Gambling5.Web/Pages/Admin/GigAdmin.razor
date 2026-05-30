@@ -8,63 +8,64 @@
 @inject IConfiguration Configuration
 @inject HttpClient Http
 @inject IAccessTokenProvider TokenProvider
+@inject Gambling5.Web.Services.LanguageService L
 
-<PageTitle>Gig Verwaltung - G♠mblinG5</PageTitle>
+<PageTitle>@L.T("Gig Verwaltung", "Gig Management", "Gigbeheer") - G♠mblinG5</PageTitle>
 
 <div class="page-background page-bg-gigs">
 
 <div class="page-header">
-    <h1 class="page-title">Gig Verwaltung</h1>
+    <h1 class="page-title">@L.T("Gig Verwaltung", "Gig Management", "Gigbeheer")</h1>
 </div>
 
 <div class="parchment-card">
     <AuthorizeView>
         <Authorized Context="authContext">
-            <p class="admin-welcome">Willkommen, @authContext.User.Identity?.Name</p>
+            <p class="admin-welcome">@L.T("Willkommen", "Welcome", "Welkom"), @authContext.User.Identity?.Name</p>
             
             <section class="admin-section">
-                <h2 class="section-title">@(editingGig == null ? "Neuer Gig" : "Gig bearbeiten")</h2>
+                <h2 class="section-title">@(editingGig == null ? L.T("Neuer Gig", "New Gig", "Nieuwe Gig") : L.T("Gig bearbeiten", "Edit Gig", "Gig bewerken"))</h2>
                 
                 <EditForm Model="@currentGig" OnValidSubmit="SaveGig" class="gig-form">
                     <div class="form-group">
-                        <label for="title">Titel</label>
+                        <label for="title">@L.T("Titel", "Title", "Titel")</label>
                         <InputText id="title" @bind-Value="currentGig.Title" class="form-control" />
                     </div>
                     
                     <div class="form-group">
-                        <label for="date">Datum</label>
+                        <label for="date">@L.T("Datum", "Date", "Datum")</label>
                         <InputDate id="date" @bind-Value="currentGig.Date" class="form-control" />
                     </div>
                     
                     <div class="form-group">
-                        <label for="venue">Veranstaltungsort</label>
+                        <label for="venue">@L.T("Veranstaltungsort", "Venue", "Locatie")</label>
                         <InputText id="venue" @bind-Value="currentGig.Venue" class="form-control" />
                     </div>
                     
                     <div class="form-group">
-                        <label for="status">Status</label>
+                        <label for="status">@L.T("Status", "Status", "Status")</label>
                         <InputSelect id="status" @bind-Value="currentGig.Status" class="form-control">
-                            <option value="confirmed">Bestätigt</option>
-                            <option value="public">Öffentlich</option>
-                            <option value="tentative">Vorläufig</option>
-                            <option value="cancelled">Abgesagt</option>
+                            <option value="confirmed">@L.T("Bestätigt", "Confirmed", "Bevestigd")</option>
+                            <option value="public">@L.T("Öffentlich", "Public", "Openbaar")</option>
+                            <option value="tentative">@L.T("Vorläufig", "Tentative", "Voorlopig")</option>
+                            <option value="cancelled">@L.T("Abgesagt", "Cancelled", "Geannuleerd")</option>
                         </InputSelect>
                     </div>
                     
                     <div class="form-group">
                         <label>
                             <InputCheckbox @bind-Value="currentGig.IsPublic" />
-                            Öffentlich sichtbar
+                            @L.T("Öffentlich sichtbar", "Visible publicly", "Publiek zichtbaar")
                         </label>
                     </div>
                     
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary" disabled="@isSaving">
-                            @(isSaving ? "Speichern..." : (editingGig == null ? "Hinzufügen" : "Aktualisieren"))
+                            @(isSaving ? L.T("Speichern...", "Saving...", "Opslaan...") : (editingGig == null ? L.T("Hinzufügen", "Add", "Toevoegen") : L.T("Aktualisieren", "Update", "Bijwerken")))
                         </button>
                         @if (editingGig != null)
                         {
-                            <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Abbrechen</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CancelEdit">@L.T("Abbrechen", "Cancel", "Annuleren")</button>
                         }
                     </div>
                 </EditForm>
@@ -76,15 +77,15 @@
             </section>
             
             <section class="admin-section">
-                <h2 class="section-title">Alle Gigs</h2>
+                <h2 class="section-title">@L.T("Alle Gigs", "All Gigs", "Alle Gigs")</h2>
                 
                 @if (isLoading)
                 {
-                    <p>Lade Gigs...</p>
+                    <p>@L.T("Lade Gigs...", "Loading gigs...", "Gigs laden...")</p>
                 }
                 else if (gigs == null || !gigs.Any())
                 {
-                    <p>Keine Gigs vorhanden.</p>
+                    <p>@L.T("Keine Gigs vorhanden.", "No gigs available.", "Geen gigs beschikbaar.")</p>
                 }
                 else
                 {
@@ -96,11 +97,11 @@
                                     <strong>@gig.Title</strong>
                                     <span class="gig-admin-date">@gig.Date.ToString("dd.MM.yyyy")</span>
                                     <span class="gig-admin-venue">@gig.Venue</span>
-                                    <span class="gig-admin-status">@gig.Status @(gig.IsPublic ? "" : "(versteckt)")</span>
+                                    <span class="gig-admin-status">@gig.Status @(gig.IsPublic ? "" : L.T("(versteckt)", "(hidden)", "(verborgen)"))</span>
                                 </div>
                                 <div class="gig-admin-actions">
-                                    <button class="btn-icon" @onclick="() => EditGig(gig)" title="Bearbeiten">✏️</button>
-                                    <button class="btn-icon btn-danger" @onclick="() => DeleteGig(gig)" title="Löschen">🗑️</button>
+                                    <button class="btn-icon" @onclick="() => EditGig(gig)" title='@L.T("Bearbeiten", "Edit", "Bewerken")'>✏️</button>
+                                    <button class="btn-icon btn-danger" @onclick="() => DeleteGig(gig)" title='@L.T("Löschen", "Delete", "Verwijderen")'>🗑️</button>
                                 </div>
                             </div>
                         }
@@ -109,7 +110,7 @@
             </section>
             
             <div class="admin-footer">
-                <a href="/gigs" class="btn btn-secondary">← Zurück zur Gig-Seite</a>
+                <a href="/gigs" class="btn btn-secondary">← @L.T("Zurück zur Gig-Seite", "Back to gigs page", "Terug naar gigs-pagina")</a>
             </div>
         </Authorized>
     </AuthorizeView>
@@ -142,7 +143,7 @@
         }
         catch (Exception ex)
         {
-            message = $"Fehler beim Laden: {ex.Message}";
+            message = $"{L.T("Fehler beim Laden", "Error while loading", "Fout bij laden")}: {ex.Message}";
             isError = true;
         }
         finally
@@ -187,7 +188,7 @@
 
         if (string.IsNullOrWhiteSpace(apiScope))
         {
-            throw new InvalidOperationException("Azure AD API scope is not configured.");
+            throw new InvalidOperationException(L.T("Azure AD API-Scope ist nicht konfiguriert.", "Azure AD API scope is not configured.", "Azure AD API-scope is niet geconfigureerd."));
         }
 
         var tokenResult = await TokenProvider.RequestAccessToken(new AccessTokenRequestOptions
@@ -197,7 +198,7 @@
 
         if (!tokenResult.TryGetToken(out var token))
         {
-            throw new InvalidOperationException("Could not acquire an Azure AD access token for the admin API.");
+            throw new InvalidOperationException(L.T("Azure AD Zugriffstoken für die Admin-API konnte nicht abgerufen werden.", "Could not acquire an Azure AD access token for the admin API.", "Kon geen Azure AD toegangstoken voor de admin-API ophalen."));
         }
 
         var request = new HttpRequestMessage(method, url);
@@ -224,20 +225,20 @@
             
             if (response.IsSuccessStatusCode)
             {
-                message = editingGig == null ? "Gig erfolgreich hinzugefügt!" : "Gig erfolgreich aktualisiert!";
+                message = editingGig == null ? L.T("Gig erfolgreich hinzugefügt!", "Gig added successfully!", "Gig succesvol toegevoegd!") : L.T("Gig erfolgreich aktualisiert!", "Gig updated successfully!", "Gig succesvol bijgewerkt!");
                 isError = false;
                 CancelEdit();
                 await LoadGigs();
             }
             else
             {
-                message = $"Fehler: {response.StatusCode}";
+                message = $"{L.T("Fehler", "Error", "Fout")}: {response.StatusCode}";
                 isError = true;
             }
         }
         catch (Exception ex)
         {
-            message = $"Fehler: {ex.Message}";
+            message = $"{L.T("Fehler", "Error", "Fout")}: {ex.Message}";
             isError = true;
         }
         finally
@@ -255,19 +256,19 @@
             
             if (response.IsSuccessStatusCode)
             {
-                message = "Gig gelöscht!";
+                message = L.T("Gig gelöscht!", "Gig deleted!", "Gig verwijderd!");
                 isError = false;
                 await LoadGigs();
             }
             else
             {
-                message = $"Fehler beim Löschen: {response.StatusCode}";
+                message = $"{L.T("Fehler beim Löschen", "Error while deleting", "Fout bij verwijderen")}: {response.StatusCode}";
                 isError = true;
             }
         }
         catch (Exception ex)
         {
-            message = $"Fehler: {ex.Message}";
+            message = $"{L.T("Fehler", "Error", "Fout")}: {ex.Message}";
             isError = true;
         }
     }

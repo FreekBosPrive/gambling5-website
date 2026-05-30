@@ -2,32 +2,33 @@
 @using Gambling5.Web.Models
 @using Gambling5.Web.Services
 @inject GigService GigService
+@inject LanguageService L
 
-<PageTitle>Auftritte - G♠mblinG5</PageTitle>
+<PageTitle>@L.T("Auftritte", "Gigs", "Optredens") - G♠mblinG5</PageTitle>
 
 <div class="page-background page-bg-gigs">
 
     <div class="page-header">
-        <h1 class="page-title">Auftritte</h1>
+        <h1 class="page-title">@L.T("Auftritte", "Gigs", "Optredens")</h1>
     </div>
 
     <div class="parchment-card">
         <section class="intro-section">
-            <h2 class="section-title">Kommende Shows</h2>
-            <p class="intro-text text-center">Hier finden Sie unsere nächsten Auftritte. Kommen Sie vorbei!</p>
+            <h2 class="section-title">@L.T("Kommende Shows", "Upcoming Shows", "Komende Shows")</h2>
+            <p class="intro-text text-center">@L.T("Hier finden Sie unsere nächsten Auftritte. Kommen Sie vorbei!", "Here you can find our next shows. Come by!", "Hier vind je onze volgende optredens. Kom langs!")</p>
         </section>
 
         <div class="gigs-list">
             @if (isLoading)
             {
                 <div class="loading-message">
-                    <p>Lade Auftritte...</p>
+                    <p>@L.T("Lade Auftritte...", "Loading gigs...", "Optredens laden...")</p>
                 </div>
             }
             else if (gigs == null || !gigs.Any())
             {
                 <div class="no-gigs-message">
-                    <p>Keine kommenden Auftritte geplant. Schauen Sie bald wieder vorbei!</p>
+                    <p>@L.T("Keine kommenden Auftritte geplant. Schauen Sie bald wieder vorbei!", "No upcoming gigs scheduled. Check back soon!", "Geen komende optredens gepland. Kom snel terug!")</p>
                 </div>
             }
             else
@@ -52,11 +53,11 @@
         </div>
 
         <section class="content-section text-center">
-            <h3 class="surprise-title">Live-Musik mit Energie gesucht?</h3>
+            <h3 class="surprise-title">@L.T("Live-Musik mit Energie gesucht?", "Looking for high-energy live music?", "Op zoek naar energieke livemuziek?")</h3>
             <p class="intro-text">
-                Bucht Gambling 5 für euer Event – wir liefern Power, Stimmung und ein echtes Live-Erlebnis. Egal ob Firmenfeier, Privatparty, Kneipenabend oder Festival: Wir reißen euch mit!
+                @L.T("Bucht Gambling 5 für euer Event – wir liefern Power, Stimmung und ein echtes Live-Erlebnis. Egal ob Firmenfeier, Privatparty, Kneipenabend oder Festival: Wir reißen euch mit!", "Book Gambling 5 for your event - we deliver power, atmosphere and a real live experience. Whether it's a corporate event, private party, pub night or festival: we get everyone moving!", "Boek Gambling 5 voor jullie event - wij brengen power, sfeer en een echte live-ervaring. Of het nu een bedrijfsevent, privéfeest, café-avond of festival is: wij slepen iedereen mee!")
             </p>
-            <a href="/contact" class="btn btn-primary">Verfügbarkeit prüfen</a>
+            <a href="/contact" class="btn btn-primary">@L.T("Verfügbarkeit prüfen", "Check Availability", "Beschikbaarheid checken")</a>
         </section>
 
         <div class="admin-link-container">
@@ -95,10 +96,10 @@
 
     private string GetStatusText(string status) => status.ToLower() switch
     {
-        "confirmed" => "Bestätigt",
-        "public" => "Öffentlich",
-        "tentative" => "Vorläufig",
-        "cancelled" => "Abgesagt",
-        _ => "Bestätigt"
+        "confirmed" => L.T("Bestätigt", "Confirmed", "Bevestigd"),
+        "public" => L.T("Öffentlich", "Public", "Openbaar"),
+        "tentative" => L.T("Vorläufig", "Tentative", "Voorlopig"),
+        "cancelled" => L.T("Abgesagt", "Cancelled", "Geannuleerd"),
+        _ => L.T("Bestätigt", "Confirmed", "Bevestigd")
     };
 }

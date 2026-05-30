@@ -1,6 +1,7 @@
 ﻿@page "/"
+@inject Gambling5.Web.Services.LanguageService L
 
-<PageTitle>Home - G♠mblinG5</PageTitle>
+<PageTitle>@L.T("Startseite", "Home", "Home") - G♠mblinG5</PageTitle>
 
 <div class="page-background page-bg-home">
 
@@ -10,78 +11,83 @@
             <div class="logo-spotlight"></div>
             <img src="images/logo.png" alt="G♠mblinG5 Logo" class="hero-logo" />
         </div>
-        <p class="hero-tagline">I bet you'll like it!</p>
+        <p class="hero-tagline">@L.T("Ich wette, es gefällt euch!", "I bet you'll like it!", "Ik wed dat jullie het leuk vinden!")</p>
         <div class="hero-actions">
-            <a href="gigs" class="btn btn-primary">View Shows</a>
-            <a href="contact" class="btn btn-secondary">Book Us</a>
+            <a href="gigs" class="btn btn-primary">@L.T("Shows ansehen", "View Shows", "Shows bekijken")</a>
+            <a href="contact" class="btn btn-secondary">@L.T("Jetzt buchen", "Book Us", "Boek ons")</a>
         </div>
     </div>
 </section>
 
 <div class="parchment-card">
     <section class="intro-section">
-        <h2 class="section-title">Wir sind Gambling 5.</h2>
+        <h2 class="section-title">@L.T("Wir sind Gambling 5.", "We are Gambling 5.", "Wij zijn Gambling 5.")</h2>
         <p class="intro-text">
-            Wir sind 5 Musiker aus Beuerberg und Huglfing mit über 30 Jahren Bühnenpräsenz, Auftritte auf 
-            kleinen und großen Festivals, Kleinkunstbühnen, Privatfesten, Apres Skipartys... wo wir unsere 
-            besonderen „unknown" Rock- und Pop Klassiker zum Besten geben.
+            @L.T(
+                "Wir sind 5 Musiker aus Beuerberg und Huglfing mit über 30 Jahren Bühnenpräsenz, Auftritte auf kleinen und großen Festivals, Kleinkunstbühnen, Privatfesten, Apres Skipartys... wo wir unsere besonderen „unknown\" Rock- und Pop Klassiker zum Besten geben.",
+                "We are 5 musicians from Beuerberg and Huglfing with more than 30 years of stage experience, performing at small and large festivals, cabaret stages, private events, and apres-ski parties... where we bring our special \"unknown\" rock and pop classics to life.",
+                "Wij zijn 5 muzikanten uit Beuerberg en Huglfing met meer dan 30 jaar podiumervaring, optredens op kleine en grote festivals, kleinkunstpodia, privéfeesten en apres-ski parties... waar we onze bijzondere \"unknown\" rock- en popklassiekers brengen.")
         </p>
         <p class="intro-text">
-            <strong class="highlight-text">Das Besondere an Gambling 5 ist die Mischung der Stücke und Interpreten.</strong>
+            <strong class="highlight-text">@L.T("Das Besondere an Gambling 5 ist die Mischung der Stücke und Interpreten.", "What makes Gambling 5 special is the mix of songs and artists.", "Wat Gambling 5 bijzonder maakt, is de mix van nummers en artiesten.")</strong>
         </p>
         <p class="intro-text">
-            Von Golden Earring über Tom Petty, Spandau Ballet bis Beyoncé.
+            @L.T("Von Golden Earring über Tom Petty, Spandau Ballet bis Beyonce.", "From Golden Earring and Tom Petty to Spandau Ballet and Beyonce.", "Van Golden Earring en Tom Petty tot Spandau Ballet en Beyonce.")
         </p>
     </section>
 
     <section class="surprise-section">
-        <h3 class="surprise-title">Die Überraschung:</h3>
+        <h3 class="surprise-title">@L.T("Die Überraschung:", "The surprise:", "De verrassing:")</h3>
         <p class="surprise-text">
-            Rock und Pop Klassiker im akustisch-elektrischen Stil die selten oder nie im Radio laufen, 
-            aber trotzdem jeder schon mal gehört hat und es einfach nur geil findet.
+            @L.T(
+                "Rock und Pop Klassiker im akustisch-elektrischen Stil die selten oder nie im Radio laufen, aber trotzdem jeder schon mal gehört hat und es einfach nur geil findet.",
+                "Rock and pop classics in an acoustic-electric style that rarely or never get radio play, yet almost everyone has heard before and instantly loves.",
+                "Rock- en popklassiekers in een akoestisch-elektrische stijl die zelden of nooit op de radio komen, maar die bijna iedereen ooit heeft gehoord en meteen geweldig vindt.")
         </p>
         <p class="surprise-text">
-            Von den 70ern begonnen bis in die 2000er. Kein abgedroschener Mainstream Rock-Pop sondern 
-            einfach mal was anderes. <strong>Anhörbar, Tanzbar, Mitreissend.</strong>
+            @L.T(
+                "Von den 70ern begonnen bis in die 2000er. Kein abgedroschener Mainstream Rock-Pop sondern einfach mal was anderes.",
+                "Starting in the 70s and running into the 2000s. No worn-out mainstream rock-pop, just something different.",
+                "Van de jaren 70 tot in de jaren 2000. Geen afgezaagde mainstream rock-pop, maar gewoon eens iets anders.") <strong>@L.T("Anhörbar, Tanzbar, Mitreissend.", "Catchy, Danceable, Captivating.", "Aangenaam, Dansbaar, Meeslepend.")</strong>
         </p>
 
         <figure class="surprise-video-frame">
             <video class="surprise-video" controls preload="metadata" playsinline>
                 <source src="/videos/20260525-gig.mp4" type="video/mp4" />
-                Dein Browser kann dieses Video nicht direkt abspielen.
+                @L.T("Dein Browser kann dieses Video nicht direkt abspielen.", "Your browser cannot play this video directly.", "Je browser kan deze video niet direct afspelen.")
             </video>
-            <figcaption class="surprise-video-caption">Ein kurzer Live-Eindruck von Gambling 5.</figcaption>
+            <figcaption class="surprise-video-caption">@L.T("Ein kurzer Live-Eindruck von Gambling 5.", "A short live impression of Gambling 5.", "Een korte live-indruk van Gambling 5.")</figcaption>
         </figure>
     </section>
 
     <section class="repertoire-section">
-        <h2 class="section-title">Unser Repertoire</h2>
+        <h2 class="section-title">@L.T("Unser Repertoire", "Our Repertoire", "Ons Repertoire")</h2>
         <div class="repertoire-grid">
             <div class="repertoire-card">
                 <div class="repertoire-icon">♠</div>
                 <h3 class="repertoire-title">Rock</h3>
-                <p class="repertoire-desc">Zeitlose Klassiker die mitreißen</p>
+                <p class="repertoire-desc">@L.T("Zeitlose Klassiker die mitreißen", "Timeless classics that pull you in", "Tijdloze klassiekers die je meeslepen")</p>
             </div>
             <div class="repertoire-card">
                 <div class="repertoire-icon">♥</div>
                 <h3 class="repertoire-title">Pop</h3>
-                <p class="repertoire-desc">Hits zum Mitsingen aus jeder Dekade</p>
+                <p class="repertoire-desc">@L.T("Hits zum Mitsingen aus jeder Dekade", "Sing-along hits from every decade", "Meezinghits uit elk decennium")</p>
             </div>
             <div class="repertoire-card">
                 <div class="repertoire-icon">♣</div>
                 <h3 class="repertoire-title">Soul & Funk</h3>
-                <p class="repertoire-desc">Grooves die die Tanzfläche füllen</p>
+                <p class="repertoire-desc">@L.T("Grooves die die Tanzfläche füllen", "Grooves that fill the dance floor", "Grooves die de dansvloer vullen")</p>
             </div>
             <div class="repertoire-card">
                 <div class="repertoire-icon">♦</div>
-                <h3 class="repertoire-title">Akustisch und Elektrisch</h3>
-                <p class="repertoire-desc">"Überraschend für jede Gelegenheit"</p>
+                <h3 class="repertoire-title">@L.T("Akustisch und Elektrisch", "Acoustic and Electric", "Akoestisch en Elektrisch")</h3>
+                <p class="repertoire-desc">@L.T("\"Überraschend für jede Gelegenheit\"", "\"A surprise for every occasion\"", "\"Verrassend voor elke gelegenheid\"")</p>
             </div>
         </div>
     </section>
 
     <section class="members-section">
-        <h2 class="members-title">Die internationalen Musiker:</h2>
+        <h2 class="members-title">@L.T("Die internationalen Musiker:", "The international musicians:", "De internationale muzikanten:")</h2>
         <div class="member-item">
             <span class="member-origin">TÖL:</span>
             <span class="member-name">Florian Tschamler:</span>
@@ -112,9 +118,9 @@
 
 <section class="cta-section">
     <div class="cta-card">
-        <h2 class="section-title">Bereit für Ihren Event?</h2>
-        <p class="intro-text text-center mb-2">Kontaktieren Sie uns für Buchungen und Verfügbarkeit</p>
-        <a href="contact" class="btn btn-primary btn-large">Jetzt Anfragen</a>
+        <h2 class="section-title">@L.T("Bereit für Ihren Event?", "Ready for your event?", "Klaar voor jouw event?")</h2>
+        <p class="intro-text text-center mb-2">@L.T("Kontaktieren Sie uns für Buchungen und Verfügbarkeit", "Contact us for bookings and availability", "Neem contact met ons op voor boekingen en beschikbaarheid")</p>
+        <a href="contact" class="btn btn-primary btn-large">@L.T("Jetzt Anfragen", "Request Now", "Nu Aanvragen")</a>
     </div>
 </section>
 

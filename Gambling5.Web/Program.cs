@@ -9,6 +9,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<GigService>();
+builder.Services.AddSingleton<LanguageService>();
 
 // Add Microsoft Authentication
 builder.Services.AddMsalAuthentication(options =>

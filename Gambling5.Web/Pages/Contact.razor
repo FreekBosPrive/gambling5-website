@@ -2,36 +2,36 @@
 @using System.Net.Http.Json
 @inject IConfiguration Configuration
 @inject HttpClient Http
+@inject Gambling5.Web.Services.LanguageService L
 
-<PageTitle>Kontakt - G♠mblinG5</PageTitle>
+<PageTitle>@L.T("Kontakt", "Contact", "Contact") - G♠mblinG5</PageTitle>
 
 <div class="page-background page-bg-contact">
 
     <div class="page-header">
-        <h1 class="page-title">Kontakt</h1>
+        <h1 class="page-title">@L.T("Kontakt", "Contact", "Contact")</h1>
     </div>
 
     <div class="parchment-card">
         <section class="intro-section">
             <div class="contact-box">
-                <h2 class="contact-title">Kontakt:</h2>
+                <h2 class="contact-title">@L.T("Kontakt:", "Contact:", "Contact:")</h2>
                 <p class="contact-name">Florian Tschamler</p>
-                <p class="contact-info">Telefon: 08179/5405</p>
-                <p class="contact-info">Mobil: 0176/18853226</p>
+                <p class="contact-info">@L.T("Telefon", "Phone", "Telefoon"): 08179/5405</p>
+                <p class="contact-info">@L.T("Mobil", "Mobile", "Mobiel"): 0176/18853226</p>
                 <p class="contact-info">E-Mail: <a href="mailto:info@gambling5.de"
                         class="contact-email">info@gambling5.de</a></p>
             </div>
         </section>
 
         <section class="content-section">
-            <h2 class="section-title">Anfrage senden</h2>
-            <p class="intro-text text-center mb-2">Füllen Sie das Formular aus und wir melden uns innerhalb von 24
-                Stunden.</p>
+            <h2 class="section-title">@L.T("Anfrage senden", "Send Request", "Aanvraag versturen")</h2>
+            <p class="intro-text text-center mb-2">@L.T("Füllen Sie das Formular aus und wir melden uns innerhalb von 24 Stunden.", "Fill out the form and we will get back to you within 24 hours.", "Vul het formulier in en we reageren binnen 24 uur.")</p>
 
             @if (messageSent)
             {
                 <div class="alert alert-success">
-                    <strong>Vielen Dank!</strong> Ihre Nachricht wurde gesendet. Wir melden uns bald bei Ihnen!
+                    <strong>@L.T("Vielen Dank!", "Thank you!", "Dank je wel!")</strong> @L.T("Ihre Nachricht wurde gesendet. Wir melden uns bald bei Ihnen!", "Your message has been sent. We will get back to you soon!", "Je bericht is verzonden. We nemen snel contact met je op!")
                 </div>
             }
             else
@@ -44,7 +44,7 @@
                 }
                 <form class="contact-form" @onsubmit="HandleSubmit" @onsubmit:preventDefault>
                     <div class="form-group">
-                        <label class="form-label" for="name">Name *</label>
+                        <label class="form-label" for="name">@L.T("Name", "Name", "Naam") *</label>
                         <input type="text" id="name" class="form-control" @bind="name" required />
                     </div>
 
@@ -54,30 +54,30 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="phone">Telefon</label>
+                        <label class="form-label" for="phone">@L.T("Telefon", "Phone", "Telefoon")</label>
                         <input type="tel" id="phone" class="form-control" @bind="phone" />
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="eventType">Art der Veranstaltung</label>
+                        <label class="form-label" for="eventType">@L.T("Art der Veranstaltung", "Type of Event", "Type Evenement")</label>
                         <select id="eventType" class="form-control" @bind="eventType">
-                            <option value="">Bitte wählen...</option>
-                            <option value="firmenfeier">Firmenfeier</option>
-                            <option value="privatfest">Privatfest</option>
-                            <option value="kneipe">Kneipenabend</option>
-                            <option value="festival">Festival/Öffentlich</option>
-                            <option value="sonstiges">Sonstiges</option>
+                            <option value="">@L.T("Bitte wählen...", "Please choose...", "Maak een keuze...")</option>
+                            <option value="firmenfeier">@L.T("Firmenfeier", "Corporate Event", "Bedrijfsevent")</option>
+                            <option value="privatfest">@L.T("Privatfest", "Private Party", "Privéfeest")</option>
+                            <option value="kneipe">@L.T("Kneipenabend", "Pub Night", "Café-avond")</option>
+                            <option value="festival">@L.T("Festival/Öffentlich", "Festival/Public", "Festival/Openbaar")</option>
+                            <option value="sonstiges">@L.T("Sonstiges", "Other", "Overig")</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="date">Datum der Veranstaltung</label>
+                        <label class="form-label" for="date">@L.T("Datum der Veranstaltung", "Event Date", "Datum van het evenement")</label>
                         <input type="text" id="date" class="form-control" @bind="eventDate"
-                            placeholder="z.B. 15. März 2026" />
+                            placeholder='@L.T("z.B. 15. März 2026", "e.g. March 15, 2026", "bijv. 15 maart 2026")' />
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="message">Nachricht *</label>
+                        <label class="form-label" for="message">@L.T("Nachricht", "Message", "Bericht") *</label>
                         <textarea id="message" class="form-control" rows="5" @bind="message" required></textarea>
                     </div>
 
@@ -85,11 +85,11 @@
                         <button type="submit" class="btn btn-primary btn-large" disabled="@isSubmitting">
                             @if (isSubmitting)
                             {
-                                <span>Wird gesendet...</span>
+                                <span>@L.T("Wird gesendet...", "Sending...", "Wordt verzonden...")</span>
                             }
                             else
                             {
-                                <span>Nachricht senden</span>
+                                <span>@L.T("Nachricht senden", "Send Message", "Bericht verzenden")</span>
                             }
                         </button>
                     </div>
@@ -141,12 +141,12 @@
             }
             else
             {
-                errorMessage = "Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail.";
+                errorMessage = L.T("Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail.", "There was an error while sending. Please try again or contact us directly by email.", "Er is een fout opgetreden bij het verzenden. Probeer het opnieuw of neem direct contact op via e-mail.");
             }
         }
         catch (Exception)
         {
-            errorMessage = "Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail.";
+            errorMessage = L.T("Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail.", "There was an error while sending. Please try again or contact us directly by email.", "Er is een fout opgetreden bij het verzenden. Probeer het opnieuw of neem direct contact op via e-mail.");
         }
         finally
         {

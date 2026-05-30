@@ -1,4 +1,7 @@
-﻿<CascadingAuthenticationState>
+﻿@implements IDisposable
+@inject Gambling5.Web.Services.LanguageService L
+
+<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
@@ -9,11 +12,11 @@
                     }
                     else
                     {
-                        <p role="alert">Sie haben keine Berechtigung für diese Seite.</p>
+                        <p role="alert">@L.T("Sie haben keine Berechtigung für diese Seite.", "You are not authorized to view this page.", "U bent niet gemachtigd om deze pagina te bekijken.")</p>
                     }
                 </NotAuthorized>
                 <Authorizing>
-                    <p>Laden...</p>
+                    <p>@L.T("Laden...", "Loading...", "Laden...")</p>
                 </Authorizing>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -21,8 +24,25 @@
         <NotFound>
             <PageTitle>Not found</PageTitle>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
+                <p role="alert">@L.T("Diese Adresse existiert nicht.", "Sorry, there's nothing at this address.", "Sorry, er is niets op dit adres.")</p>
             </LayoutView>
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
+@code {
+    protected override void OnInitialized()
+    {
+        L.OnChange += HandleLanguageChanged;
+    }
+
+    private void HandleLanguageChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        L.OnChange -= HandleLanguageChanged;
+    }
+}
