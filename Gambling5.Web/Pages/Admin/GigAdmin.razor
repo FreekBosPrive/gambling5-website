@@ -3,9 +3,11 @@
 @using Gambling5.Web.Models
 @using Gambling5.Web.Services
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject GigService GigService
 @inject IConfiguration Configuration
 @inject HttpClient Http
+@inject IAccessTokenProvider TokenProvider
 
 <PageTitle>Gig Verwaltung - G♠mblinG5</PageTitle>
 
@@ -124,12 +126,10 @@
     private string message = "";
     private bool isError = false;
     private string apiBaseUrl = "";
-    private string apiFunctionKey = "";
 
     protected override async Task OnInitializedAsync()
     {
         apiBaseUrl = Configuration["ApiBaseUrl"] ?? "https://gambling5-api.azurewebsites.net/api";
-        apiFunctionKey = Configuration["ApiFunctionKey"] ?? "";
         await LoadGigs();
     }
 
@@ -173,6 +173,44 @@
         message = "";
     }
 
+    private async Task<HttpRequestMessage> CreateAdminRequestAsync(HttpMethod method, string url, object? content = null)
+    {
+        var apiScope = Configuration["AzureAd:ApiScope"];
+        if (string.IsNullOrWhiteSpace(apiScope))
+        {
+            var clientId = Configuration["AzureAd:ClientId"];
+            if (!string.IsNullOrWhiteSpace(clientId))
+            {
+                apiScope = $"api://{clientId}/access_as_user";
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(apiScope))
+        {
+            throw new InvalidOperationException("Azure AD API scope is not configured.");
+        }
+
+        var tokenResult = await TokenProvider.RequestAccessToken(new AccessTokenRequestOptions
+        {
+            Scopes = [apiScope]
+        });
+
+        if (!tokenResult.TryGetToken(out var token))
+        {
+            throw new InvalidOperationException("Could not acquire an Azure AD access token for the admin API.");
+        }
+
+        var request = new HttpRequestMessage(method, url);
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.Value);
+
+        if (content is not null)
+        {
+            request.Content = JsonContent.Create(content);
+        }
+
+        return request;
+    }
+
     private async Task SaveGig()
     {
         isSaving = true;
@@ -180,9 +218,7 @@
         
         try
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"{apiBaseUrl}/gigs");
-            request.Content = JsonContent.Create(currentGig);
-            request.Headers.Add("x-functions-key", apiFunctionKey);
+            var request = await CreateAdminRequestAsync(HttpMethod.Post, $"{apiBaseUrl}/gigs", currentGig);
             
             var response = await Http.SendAsync(request);
             
@@ -214,8 +250,7 @@
     {
         try
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, $"{apiBaseUrl}/gigs/{gig.Id}");
-            request.Headers.Add("x-functions-key", apiFunctionKey);
+            var request = await CreateAdminRequestAsync(HttpMethod.Delete, $"{apiBaseUrl}/gigs/{gig.Id}");
             var response = await Http.SendAsync(request);
             
             if (response.IsSuccessStatusCode)

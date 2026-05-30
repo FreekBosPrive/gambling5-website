@@ -88,6 +88,22 @@ Visit: https://localhost:5001
 dotnet publish -c Release
 ```
 
+## Admin Authentication
+
+The admin page and the admin API now use the same Azure AD authorization model.
+
+- The Blazor app signs users in with Azure AD and requests an API access token.
+- The Azure Functions API validates that bearer token for gig create and delete operations.
+- Public gig reads remain anonymous.
+
+Expected Azure AD setup:
+
+- Use the existing SPA app registration or a dedicated API app registration in the same tenant.
+- Expose an API scope named `access_as_user`.
+- Set the SPA scope to `api://<app-client-id>/access_as_user`, or configure `AzureAd:ApiScope` explicitly.
+- Configure the Function App with `AzureAd__Authority=https://login.microsoftonline.com/<tenant-id>`.
+- Configure the Function App with `AzureAd__ClientId=<app-client-id>` or `AzureAd__ApiAudience=<expected-audience>`.
+
 ### Next Steps
 1. Customize pages (Home, About, Gigs, Contact)
 2. Style based on band identity

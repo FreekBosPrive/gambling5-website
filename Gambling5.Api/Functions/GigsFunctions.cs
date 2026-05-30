@@ -1,5 +1,6 @@
 using Azure.Data.Tables;
 using Gambling5.Api.Models;
+using Gambling5.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -10,11 +11,13 @@ namespace Gambling5.Api.Functions;
 public class GigsFunctions
 {
     private readonly ILogger<GigsFunctions> _logger;
+    private readonly AzureAdTokenValidator _tokenValidator;
     private readonly string _connectionString;
 
-    public GigsFunctions(ILogger<GigsFunctions> logger)
+    public GigsFunctions(ILogger<GigsFunctions> logger, AzureAdTokenValidator tokenValidator)
     {
         _logger = logger;
+        _tokenValidator = tokenValidator;
         _connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage") ?? "UseDevelopmentStorage=true";
     }
 
@@ -24,6 +27,23 @@ public class GigsFunctions
         var tableClient = tableServiceClient.GetTableClient("gigs");
         await tableClient.CreateIfNotExistsAsync();
         return tableClient;
+    }
+
+    private async Task<IActionResult?> RequireAdminAsync(HttpRequest req, CancellationToken cancellationToken)
+    {
+        var validationOutcome = await _tokenValidator.ValidateAsync(req, cancellationToken);
+
+        if (validationOutcome.IsMisconfigured)
+        {
+            return new ObjectResult(new { error = "API authentication is not configured." }) { StatusCode = StatusCodes.Status500InternalServerError };
+        }
+
+        if (!validationOutcome.IsAuthenticated)
+        {
+            return new UnauthorizedResult();
+        }
+
+        return null;
     }
 
     [Function("GetGigs")]
@@ -79,9 +99,15 @@ public class GigsFunctions
 
     [Function("CreateGig")]
     public async Task<IActionResult> CreateGig(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gigs")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gigs")] HttpRequest req)
     {
         _logger.LogInformation("Creating new gig");
+
+        var unauthorizedResult = await RequireAdminAsync(req, req.HttpContext.RequestAborted);
+        if (unauthorizedResult is not null)
+        {
+            return unauthorizedResult;
+        }
 
         try
         {
@@ -107,10 +133,16 @@ public class GigsFunctions
 
     [Function("DeleteGig")]
     public async Task<IActionResult> DeleteGig(
-        [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "gigs/{id}")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "gigs/{id}")] HttpRequest req,
         string id)
     {
         _logger.LogInformation("Deleting gig {Id}", id);
+
+        var unauthorizedResult = await RequireAdminAsync(req, req.HttpContext.RequestAborted);
+        if (unauthorizedResult is not null)
+        {
+            return unauthorizedResult;
+        }
 
         try
         {
