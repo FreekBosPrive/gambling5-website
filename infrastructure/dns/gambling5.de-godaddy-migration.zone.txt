@@ -25,6 +25,17 @@
 ;
 ; Use at your own risk.
 
+; -----------------------------------------------------------------------------
+; MIGRATION NOTES (2026-05-31)
+; Target tenant: f2da6e65-a764-4872-8171-7658c92727d6
+; Target Static Web App host: thankful-coast-059490103.7.azurestaticapps.net.
+;
+; Applied migration changes below:
+; 1) Added apex TXT validation token required by Azure Static Web Apps.
+; 2) Switched `www` CNAME from old SWA host to the new SWA host.
+; 3) Left mail and M365-related records unchanged (MX/SPF/DMARC/autodiscover/SIP).
+; -----------------------------------------------------------------------------
+
 
 $ORIGIN gambling5.de.
 
@@ -44,6 +55,8 @@ $ORIGIN gambling5.de.
 ; TXT Record
 @	3600	 IN 	TXT	"MS=ms25150034"
 @	3600	 IN 	TXT	"v=spf1 include:secureserver.net -all"
+; Azure Static Web Apps apex-domain validation token for gambling5.de
+@	3600	 IN 	TXT	"_8rro6b4rk8od7trqzaj6itvzacv7yfe"
 _dmarc	3600	 IN 	TXT	"v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net;"
 
 ; CNAME Record
@@ -52,7 +65,8 @@ email	3600	 IN 	CNAME	email.secureserver.net.
 lyncdiscover	3600	 IN 	CNAME	webdir.online.lync.com.
 msoid	3600	 IN 	CNAME	clientconfig.microsoftonline-p.net.
 sip	3600	 IN 	CNAME	sipdir.online.lync.com.
-www	3600	 IN 	CNAME	orange-smoke-088c08803.4.azurestaticapps.net.
+; Website cutover from old tenant SWA to new tenant SWA
+www	3600	 IN 	CNAME	thankful-coast-059490103.7.azurestaticapps.net.
 _domainconnect	3600	 IN 	CNAME	_domainconnect.gd.domaincontrol.com.
 
 ; SRV Record

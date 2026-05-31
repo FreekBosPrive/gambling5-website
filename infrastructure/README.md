@@ -11,7 +11,9 @@ This folder contains Azure deployment scripts and infrastructure-as-code for the
 
 ## DNS Migration Artifacts
 
-- `dns/gambling5.de-godaddy-migration.zone.txt`: Original GoDaddy DNS export snapshot (baseline before migration edits).
+- `dns/gambling5.de-godaddy-migration.zone.txt`: DNS migration working file with:
+	- baseline GoDaddy export committed first in history
+	- explicit in-file migration annotations for tenant cutover
 
 ## Status
 
