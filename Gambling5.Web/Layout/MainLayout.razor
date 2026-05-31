@@ -13,11 +13,15 @@
     <footer class="site-footer">
         <div class="container">
             <p>&copy; 2026 G♠mblinG5. @L.T("Ich wette, es gefällt Ihnen.", "I bet you'll like it.", "Ik wed dat je het leuk vindt.")</p>
+            <p>Version @SiteVersion</p>
         </div>
     </footer>
 </div>
 
 @code {
+    private static readonly string SiteVersion =
+        typeof(Program).Assembly.GetName().Version?.ToString(3) ?? "unknown";
+
     protected override void OnInitialized()
     {
         L.OnChange += HandleLanguageChanged;
