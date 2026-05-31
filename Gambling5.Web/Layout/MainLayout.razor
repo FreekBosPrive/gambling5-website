@@ -20,7 +20,7 @@
 
 @code {
     private static readonly string SiteVersion =
-        typeof(Program).Assembly.GetName().Version?.ToString(3) ?? "unknown";
+        typeof(Program).Assembly.GetName().Version?.ToString(4) ?? "unknown";
 
     protected override void OnInitialized()
     {
