@@ -1,0 +1,51 @@
+; Domain: gambling5.de
+; Purpose: DNS migration snapshot for cutover to new Azure tenant Static Web App
+; Source basis: GoDaddy export adapted for Azure migration
+; Updated: 2026-05-31
+;
+; NOTE:
+; - Keep all M365/mail records intact.
+; - Website change is only the `www` CNAME.
+; - Apex validation TXT token is included for Azure Static Web App domain validation.
+; - Apex A records below are GoDaddy forwarding defaults; keep unless you switch apex strategy.
+
+$ORIGIN gambling5.de.
+
+; SOA Record
+@	3600	 IN 	SOA	ns33.domaincontrol.com.	dns.jomax.net. (
+					2026031801
+					28800
+					7200
+					604800
+					3600
+					)
+
+; A Record (GoDaddy domain forwarding defaults)
+@	3600	 IN 	A	15.197.225.128
+@	3600	 IN 	A	3.33.251.168
+
+; TXT Record
+@	3600	 IN 	TXT	"MS=ms25150034"
+@	3600	 IN 	TXT	"v=spf1 include:secureserver.net -all"
+@	3600	 IN 	TXT	"_8rro6b4rk8od7trqzaj6itvzacv7yfe"
+_dmarc	3600	 IN 	TXT	"v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net;"
+
+; CNAME Record
+autodiscover	3600	 IN 	CNAME	autodiscover.outlook.com.
+email	3600	 IN 	CNAME	email.secureserver.net.
+lyncdiscover	3600	 IN 	CNAME	webdir.online.lync.com.
+msoid	3600	 IN 	CNAME	clientconfig.microsoftonline-p.net.
+sip	3600	 IN 	CNAME	sipdir.online.lync.com.
+www	3600	 IN 	CNAME	thankful-coast-059490103.7.azurestaticapps.net.
+_domainconnect	3600	 IN 	CNAME	_domainconnect.gd.domaincontrol.com.
+
+; SRV Record
+_sip._tls.@	3600	 IN 	SRV	100	1	443	sipdir.online.lync.com.
+_sipfederationtls._tcp.@	3600	 IN 	SRV	100	1	5061	sipfed.online.lync.com.
+
+; NS Record
+@	3600	 IN 	NS	ns33.domaincontrol.com.
+@	3600	 IN 	NS	ns34.domaincontrol.com.
+
+; MX Record
+@	3600	 IN 	MX	0	gambling5-de.mail.protection.outlook.com.
