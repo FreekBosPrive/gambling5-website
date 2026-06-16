@@ -67,12 +67,14 @@ public class ContactFunctions
                 return badResponse;
             }
 
-            // Get SMTP settings from environment variables (GoDaddy)
+            // Get SMTP settings from environment variables
             var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST") ?? "smtpout.secureserver.net";
             var smtpPort = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587");
             var smtpUser = Environment.GetEnvironmentVariable("SMTP_USER") ?? "";
             var smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "";
             var toEmail = Environment.GetEnvironmentVariable("CONTACT_EMAIL") ?? "info@gambling5.de";
+            var fromEmail = Environment.GetEnvironmentVariable("SMTP_FROM_EMAIL") ?? toEmail;
+            var fromName = Environment.GetEnvironmentVariable("SMTP_FROM_NAME") ?? "G♠mblinG5 Website";
 
             if (string.IsNullOrEmpty(smtpUser) || string.IsNullOrEmpty(smtpPassword))
             {
@@ -117,7 +119,7 @@ Diese E-Mail wurde automatisch über das Kontaktformular auf www.gambling5.de ge
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(smtpUser, "G♠mblinG5 Website"),
+                From = new MailAddress(fromEmail, fromName),
                 Subject = $"Kontaktanfrage von {contact.Name}",
                 Body = emailBody,
                 IsBodyHtml = false
