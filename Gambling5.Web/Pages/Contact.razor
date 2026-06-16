@@ -119,10 +119,8 @@
         try
         {
             var apiBaseUrl = Configuration["ApiBaseUrl"] ?? "https://gambling5-api.azurewebsites.net/api";
-            var functionKey = Configuration["ApiFunctionKey"] ?? "";
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"{apiBaseUrl}/contact");
-            request.Headers.Add("x-functions-key", functionKey);
             request.Content = JsonContent.Create(new
             {
                 name,

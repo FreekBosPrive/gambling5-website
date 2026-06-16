@@ -35,6 +35,6 @@ jobs:
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
         with:
-          app-name: gambling5-api-new
+          app-name: gambling5-api-prod
           package: published_api
           # Uses credentials from azure/login

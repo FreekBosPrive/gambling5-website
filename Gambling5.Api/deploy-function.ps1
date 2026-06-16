@@ -9,7 +9,7 @@ param(
     [string]$Location = "westeurope",
     
     [Parameter(Mandatory = $false)]
-    [string]$FunctionAppName = "gambling5-api",
+    [string]$FunctionAppName = "gambling5-api-prod",
     
     [Parameter(Mandatory = $false)]
     [string]$StorageAccountName = "gambling5storage"
@@ -74,7 +74,7 @@ Write-Host "`n4. Configuring CORS..." -ForegroundColor Yellow
 az functionapp cors add `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --allowed-origins "https://orange-smoke-088c08803.4.azurestaticapps.net" "https://www.gambling5.de" "http://localhost:5259"
+    --allowed-origins "https://www.gambling5.de" "https://gambling5.de" "http://localhost:5259"
 
 Write-Host "   CORS configured." -ForegroundColor Green
 

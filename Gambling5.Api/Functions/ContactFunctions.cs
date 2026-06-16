@@ -21,7 +21,7 @@ public class ContactFunctions
 
     [Function("SendContactEmail")]
     public async Task<HttpResponseData> SendContactEmail(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "contact")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "contact")] HttpRequestData req)
     {
         _logger.LogInformation("Processing contact form submission");
 
