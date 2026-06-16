@@ -1,11 +1,14 @@
+using Azure.Core;
+using Azure.Data.Tables;
+using Azure.Identity;
+using Gambling5.Api.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
-using System.Net.Mail;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
-using Azure.Data.Tables;
-using Gambling5.Api.Models;
 
 namespace Gambling5.Api.Functions;
 
@@ -13,6 +16,9 @@ public class ContactFunctions
 {
     private readonly ILogger<ContactFunctions> _logger;
     private const int DAILY_EMAIL_LIMIT = 25;
+    private static readonly HttpClient HttpClient = new();
+    private static readonly TokenCredential GraphCredential = new DefaultAzureCredential();
+    private static readonly string[] GraphScopes = ["https://graph.microsoft.com/.default"];
 
     public ContactFunctions(ILogger<ContactFunctions> logger)
     {
@@ -27,7 +33,6 @@ public class ContactFunctions
 
         try
         {
-            // Check daily email limit
             var connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage") ?? "";
             var tableClient = new TableClient(connectionString, "emailcounter");
             await tableClient.CreateIfNotExistsAsync();
@@ -42,7 +47,7 @@ public class ContactFunctions
             }
             catch (Azure.RequestFailedException ex) when (ex.Status == 404)
             {
-                // Counter doesn't exist for today, will create new one
+                // Counter doesn't exist for today, will create a new one after sending.
             }
 
             if (counter != null && counter.Count >= DAILY_EMAIL_LIMIT)
@@ -67,30 +72,23 @@ public class ContactFunctions
                 return badResponse;
             }
 
-            // Get SMTP settings from environment variables
-            var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST") ?? "smtpout.secureserver.net";
-            var smtpPort = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587");
-            var smtpUser = Environment.GetEnvironmentVariable("SMTP_USER") ?? "";
-            var smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "";
+            var senderEmail = Environment.GetEnvironmentVariable("GRAPH_SENDER_EMAIL") ?? "info@gambling5.de";
             var toEmail = Environment.GetEnvironmentVariable("CONTACT_EMAIL") ?? "info@gambling5.de";
-            var fromEmail = Environment.GetEnvironmentVariable("SMTP_FROM_EMAIL") ?? toEmail;
-            var fromName = Environment.GetEnvironmentVariable("SMTP_FROM_NAME") ?? "G♠mblinG5 Website";
 
-            if (string.IsNullOrEmpty(smtpUser) || string.IsNullOrEmpty(smtpPassword))
+            if (string.IsNullOrEmpty(senderEmail) || string.IsNullOrEmpty(toEmail))
             {
-                _logger.LogError("SMTP credentials not configured");
+                _logger.LogError("Graph mail sender or recipient is not configured");
                 var errorResponse = req.CreateResponse(HttpStatusCode.InternalServerError);
                 await errorResponse.WriteStringAsync("Email service not configured");
                 return errorResponse;
             }
 
-            // Build email content
             var eventTypeDisplay = contact.EventType switch
             {
                 "firmenfeier" => "Firmenfeier",
                 "privatfest" => "Privatfest",
                 "kneipe" => "Kneipenabend",
-                "festival" => "Festival/Öffentlich",
+                "festival" => "Festival/Oeffentlich",
                 "sonstiges" => "Sonstiges",
                 _ => "Nicht angegeben"
             };
@@ -108,28 +106,74 @@ Nachricht:
 {contact.Message}
 
 ---
-Diese E-Mail wurde automatisch über das Kontaktformular auf www.gambling5.de gesendet.
+Diese E-Mail wurde automatisch ueber das Kontaktformular auf www.gambling5.de gesendet.
 ";
 
-            using var smtpClient = new SmtpClient(smtpHost, smtpPort)
+            var graphToken = await GraphCredential.GetTokenAsync(
+                new TokenRequestContext(GraphScopes),
+                req.FunctionContext.CancellationToken);
+
+            var graphPayload = new
             {
-                Credentials = new NetworkCredential(smtpUser, smtpPassword),
-                EnableSsl = true
+                message = new
+                {
+                    subject = $"Kontaktanfrage von {contact.Name}",
+                    body = new
+                    {
+                        contentType = "Text",
+                        content = emailBody
+                    },
+                    toRecipients = new[]
+                    {
+                        new
+                        {
+                            emailAddress = new
+                            {
+                                address = toEmail
+                            }
+                        }
+                    },
+                    replyTo = new[]
+                    {
+                        new
+                        {
+                            emailAddress = new
+                            {
+                                address = contact.Email,
+                                name = contact.Name
+                            }
+                        }
+                    }
+                },
+                saveToSentItems = false
             };
 
-            var mailMessage = new MailMessage
+            using var graphRequest = new HttpRequestMessage(
+                HttpMethod.Post,
+                $"https://graph.microsoft.com/v1.0/users/{Uri.EscapeDataString(senderEmail)}/sendMail");
+            graphRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", graphToken.Token);
+            graphRequest.Content = new StringContent(
+                JsonSerializer.Serialize(graphPayload),
+                Encoding.UTF8,
+                "application/json");
+
+            using var graphResponse = await HttpClient.SendAsync(
+                graphRequest,
+                req.FunctionContext.CancellationToken);
+
+            if (!graphResponse.IsSuccessStatusCode)
             {
-                From = new MailAddress(fromEmail, fromName),
-                Subject = $"Kontaktanfrage von {contact.Name}",
-                Body = emailBody,
-                IsBodyHtml = false
-            };
-            mailMessage.To.Add(toEmail);
-            mailMessage.ReplyToList.Add(new MailAddress(contact.Email, contact.Name));
+                var graphError = await graphResponse.Content.ReadAsStringAsync(req.FunctionContext.CancellationToken);
+                _logger.LogError(
+                    "Graph sendMail failed with status {StatusCode}: {GraphError}",
+                    graphResponse.StatusCode,
+                    graphError);
 
-            await smtpClient.SendMailAsync(mailMessage);
+                var errorResponse = req.CreateResponse(HttpStatusCode.InternalServerError);
+                await errorResponse.WriteStringAsync("Error sending email through Microsoft Graph");
+                return errorResponse;
+            }
 
-            // Increment daily counter
             if (counter == null)
             {
                 counter = new EmailCounterEntity
