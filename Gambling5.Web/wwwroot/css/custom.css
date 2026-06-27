@@ -815,6 +815,53 @@ p {
     font-weight: 600;
 }
 
+.story-icon-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.85rem;
+    margin: -0.75rem 0 1.35rem;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 1.7rem;
+    color: var(--text-brown);
+}
+
+.story-icon-strip span:nth-child(even),
+.story-chip {
+    color: var(--accent-red);
+}
+
+.story-icon-strip-small {
+    margin: -0.5rem 0 1.25rem;
+    font-size: 1.35rem;
+}
+
+.story-section-marker {
+    margin: 0 0 1rem;
+    text-align: center;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--accent-red);
+}
+
+.story-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    margin: 0 0.45rem;
+    border: 1px solid var(--border-gold);
+    border-radius: 50%;
+    background: rgba(244, 226, 185, 0.65);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 1.15rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+
 /* === REPERTOIRE GRID === */
 .repertoire-section {
     padding: 2rem 1.5rem 2rem;
