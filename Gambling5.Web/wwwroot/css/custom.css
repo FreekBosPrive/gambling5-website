@@ -416,26 +416,32 @@ p {
 
 /* Card rotations - fanned out from top right */
 .nav-card.spade {
-    --rot: -12deg;
-    transform: rotate(-12deg);
-    z-index: 4;
+    --rot: -16deg;
+    transform: rotate(-16deg);
+    z-index: 5;
 }
 
 .nav-card.heart {
-    --rot: -4deg;
-    transform: rotate(-4deg);
+    --rot: -8deg;
+    transform: rotate(-8deg);
+    z-index: 4;
+}
+
+.nav-card.joker {
+    --rot: 0deg;
+    transform: rotate(0deg);
     z-index: 3;
 }
 
 .nav-card.diamond {
-    --rot: 4deg;
-    transform: rotate(4deg);
+    --rot: 8deg;
+    transform: rotate(8deg);
     z-index: 2;
 }
 
 .nav-card.club {
-    --rot: 12deg;
-    transform: rotate(12deg);
+    --rot: 16deg;
+    transform: rotate(16deg);
     z-index: 1;
 }
 
@@ -455,6 +461,19 @@ p {
 .nav-card.spade .suit,
 .nav-card.club .suit {
     color: #1a1a1a;
+}
+
+.nav-card.joker .suit {
+    color: #1a1a1a;
+    margin-bottom: 2px;
+}
+
+.joker-mark {
+    width: var(--suit-size);
+    height: var(--suit-size);
+    display: block;
+    margin: 0 auto;
+    fill: currentColor;
 }
 
 .nav-card .label {
@@ -479,7 +498,7 @@ p {
         display: flex !important;
         flex-direction: row;
         position: fixed;
-        right: -115px;
+        right: -128px;
         top: 120px;
         gap: 0;
         z-index: 9999;
@@ -510,24 +529,34 @@ p {
         font-size: 13px;
     }
 
+    .joker-mark {
+        width: 20px;
+        height: 20px;
+    }
+
     /* Keep the same fan rotations as desktop */
     .nav-card.spade {
-        transform: rotate(-12deg);
-        z-index: 4;
+        transform: rotate(-16deg);
+        z-index: 5;
     }
 
     .nav-card.heart {
-        transform: rotate(-4deg);
+        transform: rotate(-8deg);
+        z-index: 4;
+    }
+
+    .nav-card.joker {
+        transform: rotate(0deg);
         z-index: 3;
     }
 
     .nav-card.diamond {
-        transform: rotate(4deg);
+        transform: rotate(8deg);
         z-index: 2;
     }
 
     .nav-card.club {
-        transform: rotate(12deg);
+        transform: rotate(16deg);
         z-index: 1;
     }
 

@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Gambling5.Web",
+      "type": "blazorwasm",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/Gambling5.Web",
+      "preLaunchTask": "run Gambling5.Web",
+      "url": "http://localhost:5259/",
+      "browser": "edge",
+      "webRoot": "${workspaceFolder}/Gambling5.Web/wwwroot",
+      "timeout": 30000
+    }
+  ]
+}

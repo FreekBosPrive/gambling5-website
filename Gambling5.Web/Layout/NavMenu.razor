@@ -26,6 +26,19 @@
                 <span class="suit">♥</span>
                 <span class="label">About</span>
             </NavLink>
+            <NavLink class="nav-card joker" href="story">
+                <span class="suit" aria-hidden="true">
+                    <svg class="joker-mark" viewBox="0 0 64 72" role="img" focusable="false">
+                        <path d="M32 5c-3 9-8 15-15 18 5 2 9 5 12 10-6-2-13-2-21 0 6 8 11 14 15 18-4 1-8 2-13 2 7 9 14 14 22 14s15-5 22-14c-5 0-9-1-13-2 4-4 9-10 15-18-8-2-15-2-21 0 3-5 7-8 12-10C40 20 35 14 32 5Z" />
+                        <circle cx="21" cy="12" r="4" />
+                        <circle cx="43" cy="12" r="4" />
+                        <circle cx="8" cy="31" r="4" />
+                        <circle cx="56" cy="31" r="4" />
+                        <path fill="#f8f0e0" d="M23 42c3 3 6 5 9 5s6-2 9-5c-2 8-5 12-9 12s-7-4-9-12Z" />
+                    </svg>
+                </span>
+                <span class="label">Story</span>
+            </NavLink>
             <NavLink class="nav-card diamond" href="gigs">
                 <span class="suit">♦</span>
                 <span class="label">Gigs</span>
@@ -43,6 +56,9 @@
             </NavLink>
             <NavLink class="nav-link" href="about" @onclick="CollapseNavMenu">
                 About
+            </NavLink>
+            <NavLink class="nav-link" href="story" @onclick="CollapseNavMenu">
+                Story
             </NavLink>
             <NavLink class="nav-link" href="gigs" @onclick="CollapseNavMenu">
                 Gigs
