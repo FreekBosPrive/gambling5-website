@@ -85,6 +85,10 @@ body {
     background-image: url('../images/ambience-2.png');
 }
 
+.page-bg-story {
+    background-image: url('../images/ambience-5.png');
+}
+
 .page-bg-gigs {
     background-image: url('../images/ambience-3.png');
 }
