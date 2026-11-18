@@ -931,7 +931,7 @@ p {
     margin: 0;
 }
 
-.surprise-video-frame {
+.surprise-media-frame {
     margin: 1.5rem 0 0;
     padding: 0.9rem;
     background:
@@ -952,19 +952,31 @@ p {
     aspect-ratio: 5 / 4;
 }
 
+.surprise-audio-caption,
 .surprise-video-caption {
-    margin: 0.75rem 0 0;
     text-align: center;
     font-size: 0.95rem;
     letter-spacing: 0.04em;
     color: rgba(244, 226, 185, 0.82);
 }
 
+.surprise-video-caption {
+    margin: 0.75rem 0 0;
+}
+
+.surprise-audio {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    margin: 0.75rem auto 0;
+}
+
 @media (max-width: 768px) {
-    .surprise-video-frame {
+    .surprise-media-frame {
         padding: 0.65rem;
     }
 
+    .surprise-audio-caption,
     .surprise-video-caption {
         font-size: 0.88rem;
     }
